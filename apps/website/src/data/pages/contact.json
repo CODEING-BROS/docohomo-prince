@@ -1,0 +1,22 @@
+[
+  {
+    "iconClass": "fas fa-map-marker-alt",
+    "title": "Address",
+    "detail": "G1 244 Kalindipuram Near telephone exchange Prayagraj 211011"
+  },
+  {
+    "iconClass": "fas fa-phone-alt",
+    "title": "Phone",
+    "detail": ["01169266357", "6386796136"]
+  },
+  {
+    "iconClass": "far fa-envelope",
+    "title": "Email",
+    "detail": "Contact.dochomoeo@gmail.com"
+  },
+  {
+    "iconClass": "far fa-clock",
+    "title": "Opentime",
+    "detail": "10:00 am to 7:00 pm Monday to Saturday"
+  }
+]

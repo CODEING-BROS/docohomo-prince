@@ -1,0 +1,24 @@
+.accordion {
+  & > .card:not(:last-of-type) {
+    border-bottom: 1px solid setShadeColor(light);
+  }
+  .card {
+    background-color: transparent;
+    border: 0;
+
+    &-header {
+      border: 0;
+      background-color: transparent;
+      padding: 1em 0;
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+      @include typo($fsz: emCal(16, 20), $fw: 600);
+    }
+    &-body {
+      p {
+        @include typo($fsz: emCal(16, 14), $lh: emCal(14, 24));
+      }
+    }
+  }
+}

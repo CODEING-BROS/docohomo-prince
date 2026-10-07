@@ -1,0 +1,46 @@
+[
+  {
+    "title": "Home",
+    "to": "/homepages/homepage1",
+    "subMenu": [
+      { "title": "Beauty Salon", "to": "/homepages/homepage1" },
+      { "title": "Makeup Salon", "to": "/homepages/homepage2" },
+      { "title": "Natural Shop", "to": "/homepages/homepage3" },
+      { "title": "Spa Shop", "to": "/homepages/homepage4" },
+      { "title": "Mask Shop", "to": "/homepages/homepage5" },
+      { "title": "Skincare Shop", "to": "/homepages/homepage6" }
+    ]
+  },
+  { "title": "Services", "to": "/other/services" },
+  { "title": "About", "to": "/other/about" },
+  {
+    "title": "Shop",
+    "to": "/fullwidth-4col",
+
+    "subMenu": [
+      { "title": "Shop Fullwidth 4 Columns", "to": "/fullwidth-4col" },
+      { "title": "Shop Fullwidth 5 Columns", "to": "/fullwidth-5col" },
+      {
+        "title": "Shop Fullwidth Left Sidebar",
+        "to": "/fullwidth-left-sidebar"
+      },
+      {
+        "title": "Shop Fullwidth Right Sidebar",
+        "to": "/fullwidth-right-sidebar"
+      },
+      { "title": "Shop grid 4 Columns", "to": "/grid-4col" },
+      { "title": "Shop Grid 3 Columns", "to": "/grid-3col" },
+      { "title": "Shop Grid Sideber", "to": "/grid-sidebar" },
+      { "title": "Shop List Sidebar", "to": "/list-sidebar" },
+      {
+        "title": "Product Detail",
+        "to": "#"
+      },
+      { "title": "Shopping cart", "to": "/cart" },
+      { "title": "Checkout", "to": "/checkout" },
+      { "title": "Wish list", "to": "/wishlist" }
+    ]
+  },
+  { "title": "Blog", "to": "/blog" },
+  { "title": "Contact", "to": "/other/contact" }
+]

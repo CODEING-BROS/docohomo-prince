@@ -1,0 +1,55 @@
+.product-detail {
+  margin-bottom: emCal(16, 100);
+  &__wrapper {
+    padding-bottom: emCal(16, 100);
+    border-bottom: 1px solid setShadeColor(light);
+    .product-detail__slide-two {
+      @include mq(md) {
+        margin-bottom: emCal(16, 70);
+      }
+    }
+  }
+}
+
+.flex-btn-product-detail{
+  margin-top: 20px;
+  display: flex;
+ // justify-content: center;
+ // align-items: center;
+  gap: 20px;
+  
+  // @include mq(sm) {
+  //  flex-direction: column;
+  //  font-size: small;
+//}
+
+   @include mq(md) {
+    // flex-direction: column;
+    font-size: small;
+    
+  }
+  }
+
+  // @include mq(md) {
+  //   flex-direction: column;
+  // }
+
+
+// custom css anjali
+// inquiry form css
+
+.enquiry_form_box .enquiry_form_text_box label{font-size: 15px;line-height: 1.8;} 
+.enquiry_form_box .enquiry_form_text_box input{padding: 15px;margin-bottom: 10px;border: 1px solid #61616133 !important;}
+.enquiry_form_box .enquiry_form_text_box textarea{padding: 15px;border: 1px solid #61616133 !important;outline: none;}
+.enquiry_form_box{padding: 40px;}
+.enquiry_form_box .enquiry_form_heading{padding: 20px;}
+.enquiry_form_box .enquiry_form_submit_button{background-color: #04888d;}
+
+@media only screen and (max-width: 425px){
+  .product-detail__content__header h2{font-size: 18px;font-weight: 600;}
+  .product-detail__content .divider{margin: 20px 0;}
+  .product-detail__content__footer .product-detail__colors{margin: 0;}
+  .product-detail__content__footer ul{margin-bottom: 15px;}
+  .flex-btn-product-detail{margin-top: 15px;}
+  .enquiry_form_box{padding: 25px !important;top: 49% !important;width: 94% !important;}
+}

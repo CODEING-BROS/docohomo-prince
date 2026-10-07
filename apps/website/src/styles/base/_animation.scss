@@ -1,0 +1,143 @@
+//Select
+.select-dropdown {
+  &-enter {
+    opacity: 0;
+    &-active {
+      opacity: 1;
+      transition: opacity 300ms;
+    }
+  }
+  &-exit {
+    opacity: 1;
+    &-active {
+      opacity: 0;
+      transition: opacity 300ms;
+    }
+  }
+}
+
+//Cart sidebar
+.cart-sidebar {
+  &-enter {
+    opacity: 0;
+    transform: translateX(100%);
+    &-active {
+      opacity: 1;
+      transform: translateX(0);
+      transition: 300ms;
+    }
+  }
+  &-exit {
+    opacity: 1;
+    transform: translateX(0);
+    &-active {
+      opacity: 0;
+      transform: translateX(100%);
+      transition: 300ms;
+    }
+  }
+}
+
+//Search input
+.search-box {
+  &-enter {
+    opacity: 0;
+    transform: translateX(10px);
+    &-active {
+      opacity: 1;
+      transform: translateX(0);
+      transition: 300ms;
+    }
+  }
+  &-exit {
+    opacity: 1;
+    transform: translateX(0);
+    &-active {
+      opacity: 0;
+      transform: translateX(10px);
+      transition: 300ms;
+    }
+  }
+}
+
+//Mobile dropdown menu
+.dropdown-menu-mobile {
+  &-enter {
+    opacity: 0;
+    transform: translateY(10px);
+    &-active {
+      opacity: 1;
+      transform: translateY(0);
+      transition: 300ms;
+    }
+  }
+  &-exit {
+    opacity: 1;
+    transform: translateY(0);
+    &-active {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: 300ms;
+    }
+  }
+}
+
+//Slider content animation
+.slider-one-title,
+.slider-one-subtitle,
+.slider-one-description,
+.slider-one-button {
+  &-enter {
+    opacity: 0;
+    transform: translateY(-100%);
+    &-active {
+      opacity: 1;
+      transform: translateY(0);
+      transition: 1.5s;
+    }
+  }
+  &-exit {
+    opacity: 1;
+    transform: translateY(0);
+    &-active {
+      opacity: 0;
+      transform: translateY(-100%);
+      transition: 1.5s;
+    }
+  }
+}
+
+.slider-zoom-in {
+  &-enter {
+    transform: scale(1.1);
+    &-active {
+      transform: scale(1);
+      transition: 1.5s;
+    }
+  }
+  &-exit {
+    transform: scale(1);
+    &-active {
+      transform: scale(1.1);
+      transition: 1.5s;
+    }
+  }
+}
+
+//Navigation full
+.nav-full {
+  &-enter {
+    opacity: 0;
+    &-active {
+      opacity: 1;
+      transition: 0.5s;
+    }
+  }
+  &-exit {
+    opacity: 1;
+    &-active {
+      opacity: 0;
+      transition: 0.5s;
+    }
+  }
+}

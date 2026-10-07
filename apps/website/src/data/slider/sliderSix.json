@@ -1,0 +1,47 @@
+[
+  {
+    "subTitle": "Safe and efective with ",
+    "title": { "main": "Bronze Shimmer" },
+    "btn": {
+      "content": "Shop now",
+      "color": "red",
+      "href": "#"
+    },
+    "image": "/assets/images/slider/SliderSix/1.png",
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  },
+  {
+    "subTitle": "Safe and efective with ",
+    "title": { "main": "Bronze Shimmer" },
+    "btn": {
+      "content": "Shop now",
+      "color": "red",
+      "href": "#"
+    },
+    "image": "/assets/images/slider/SliderSix/2.png",
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  },
+  {
+    "subTitle": "Safe and efective with ",
+    "title": { "main": "Conceal + perfect" },
+    "btn": {
+      "content": "Shop now",
+      "color": "red",
+      "href": "#"
+    },
+    "image": "/assets/images/slider/SliderSix/3.png",
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  }
+]

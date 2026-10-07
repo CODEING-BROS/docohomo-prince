@@ -1,0 +1,47 @@
+[
+  {
+    "title": { "span": "Spa", "main": "Treatment" },
+    "subTitle": "Products for",
+    "btn": {
+      "content": "Shop now",
+      "color": "dark",
+      "href": "#"
+    },
+    "image": "/assets/images/slider/SliderFour/1.png",
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  },
+  {
+    "title": { "span": "Make Up", "main": "Can Be." },
+    "subTitle": "Life Isn’t Perfect, But",
+    "btn": {
+      "content": "Shop now",
+      "color": "dark",
+      "href": "#"
+    },
+    "image": "/assets/images/slider/SliderFour/2.png",
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  },
+  {
+    "title": { "span": "Make Up", "main": "Can Be." },
+    "subTitle": "Life Isn’t Perfect, But",
+    "btn": {
+      "content": "Shop now",
+      "color": "dark",
+      "href": "#"
+    },
+    "image": "/assets/images/slider/SliderFour/3.png",
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  }
+]

@@ -1,0 +1,82 @@
+/* third party library styles */
+//  Boostrap
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/transitions";
+@import "~bootstrap/scss/card";
+@import "~bootstrap/scss/bootstrap-grid";
+//
+@import "~lightgallery.js/dist/css/lightgallery.css";
+@import '~react-calendar/dist/Calendar.css';
+@import "~slick-carousel/slick/slick.css"; 
+//@import "~slick-carousel/slick/slick-theme.css";
+@import '~react-tabs/style/react-tabs.css';
+@import '~react-toastify/dist/ReactToastify.css';
+@import '~react-image-lightbox/style.css';
+
+/* project styles */
+@import "abstracts/functions";
+@import "abstracts/mixins";
+@import "abstracts/variables";
+
+@import "base/animation";
+@import "base/custom_container";
+@import "base/font_family";
+@import "base/reset";
+
+@import "components/accordion";
+@import "components/add_to_cart";
+@import "components/benefits";
+@import "components/breadcrumb";
+@import "components/blog_sidebar";
+@import "components/button";
+@import "components/call_to_action";
+@import "components/cart_siderbar";
+@import "components/loading";
+@import "components/modal";
+@import "components/doctor";
+@import "components/paginator";
+@import "components/pagination";
+@import "components/post_card";
+@import "components/post_content";
+@import "components/product";
+@import "components/quantity";
+@import "components/top_nav";
+@import "components/review";
+@import "components/sectionTitle";
+@import "components/select";
+@import "components/social_icons";
+@import "components/ui";
+@import "components/video_frame";
+
+@import "layouts/blog";
+@import "layouts/brands";
+@import "layouts/categories";
+@import "layouts/dale_of_week";
+@import "layouts/footer";
+@import "layouts/header";
+@import "layouts/instagram";
+@import "layouts/introduction";
+@import "layouts/menu";
+@import "layouts/product_thumb";
+@import "layouts/slider";
+@import "layouts/team";
+@import "layouts/testimonial";
+@import "layouts/product_detail";
+@import "layouts/search_box";
+
+@import "pages/blog";
+@import "pages/blog_detail";
+@import "pages/cart";
+@import "pages/checkout";
+@import "pages/contact";
+@import "pages/error";
+@import "pages/product_detail";
+@import "pages/services";
+@import "pages/shop";
+@import "pages/wishlist";
+@import "pages/doctor";
+@import "pages/login";
+@import "pages/returnCancellation";
+@import "pages/profile";

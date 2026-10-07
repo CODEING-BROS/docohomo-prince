@@ -1,0 +1,13 @@
+[
+  { "name": "Makeup", "icon": "/assets/images/category/CategoryTwo/1.png" },
+  { "name": "Skin care", "icon": "/assets/images/category/CategoryTwo/2.png" },
+  { "name": "Nail care", "icon": "/assets/images/category/CategoryTwo/3.png" },
+  { "name": "Body care", "icon": "/assets/images/category/CategoryTwo/4.png" },
+  { "name": "Fragrance", "icon": "/assets/images/category/CategoryTwo/5.png" },
+  { "name": "Supplement", "icon": "/assets/images/category/CategoryTwo/6.png" },
+  {
+    "name": "Accessories",
+    "icon": "/assets/images/category/CategoryTwo/7.png"
+  },
+  { "name": "Body care", "icon": "/assets/images/category/CategoryTwo/4.png" }
+]

@@ -1,0 +1,92 @@
+#overlay {
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 100;
+  }
+}
+
+.rate {
+  i {
+    color: setColor(star);
+    font-size: emCal(16, 12);
+  }
+}
+
+.outline-none {
+  outline: 0;
+}
+
+.slick-disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.9;
+  color: setShadeColor(light) !important;
+}
+
+.input-validator {
+  span.input-error {
+    @include typo($fsz: emCal(16, 13), $color: setColor(darkRed));
+    margin-top: emCal(16, 15);
+    display: block;
+    text-align: right;
+    font-style: italic;
+  }
+}
+
+.five-col {
+  flex: 1 1 20%;
+  max-width: 20%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+$align: (left, right, center);
+
+@each $name in $align {
+  .text-#{$name} {
+    text-align: $name;
+  }
+}
+
+.curselink{
+  cursor: pointer;
+}
+
+.divider {
+  display: flex;
+  
+  &:before,
+  &:after {
+    content: "";
+    flex: 1;
+  }
+}
+
+// Base line
+.line {
+  align-items: center;
+  margin: 1em -1em;
+  
+  &:before,
+  &:after {
+    height: 1px;
+    margin: 0 1em;
+  }
+}
+
+
+  .one-line {
+    &:before,
+    &:after {
+      background: black;
+    }
+  }

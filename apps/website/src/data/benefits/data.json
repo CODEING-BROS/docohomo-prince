@@ -1,0 +1,22 @@
+[
+  {
+    "image": "/assets/images/benefits/1.png",
+    "name": "Free Shipping",
+    "content": "Free shipping on all order"
+  },
+  {
+    "image": "/assets/images/benefits/2.png",
+    "name": "Valuable Gifts",
+    "content": "Free gift after every 10 order"
+  },
+  {
+    "image": "/assets/images/benefits/3.png",
+    "name": "All Day Support",
+    "content": "Call us: +01 234 567 89"
+  },
+  {
+    "image": "/assets/images/benefits/4.png",
+    "name": "Seasonal Sale",
+    "content": "Discounts up to 50% on all"
+  }
+]

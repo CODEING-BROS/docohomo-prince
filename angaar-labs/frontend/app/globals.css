@@ -1,0 +1,449 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+/* Panel scopes. PanelShell and AuthFrame put data-panel on their root element, so
+   `patient:h-12`-style tweaks and the sidebar token overrides below work without
+   per-panel component variants. */
+@custom-variant admin (&:is([data-panel="admin"] *));
+@custom-variant doctor (&:is([data-panel="doctor"] *));
+@custom-variant patient (&:is([data-panel="patient"] *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  /* next/font exposes --font-fraunces and --font-plex-mono (app/layout.tsx); the theme
+     keys use different names so no key references itself. */
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-heading: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /* status tones (badges, charts, callouts) */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  /* Dispensary Ledger additions */
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-primary-soft: var(--primary-soft);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-foreground: var(--terracotta-foreground);
+  --color-terracotta-soft: var(--terracotta-soft);
+  --color-plum: var(--plum);
+  --color-plum-foreground: var(--plum-foreground);
+  --color-plum-soft: var(--plum-soft);
+  --color-panel-accent: var(--panel-accent);
+  --color-panel-accent-soft: var(--panel-accent-soft);
+  /* paper and ink are fixed colours (the ink bands stay dark and their text cream in both themes) */
+  --color-paper: oklch(0.975 0.010 85);
+  --color-ink: oklch(0.215 0.018 160);
+  --shadow-float: var(--float-shadow);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ---------------------------------------------------------------------------
+   LIGHT: warm paper, botanical-green ink, terracotta reserved for "now".
+   --------------------------------------------------------------------------- */
+:root {
+  --background: oklch(0.975 0.010 85);
+  --foreground: oklch(0.215 0.018 160);
+  --card: oklch(0.992 0.005 85);
+  --card-foreground: oklch(0.215 0.018 160);
+  --popover: oklch(0.992 0.005 85);
+  --popover-foreground: oklch(0.215 0.018 160);
+  --surface-2: oklch(0.950 0.014 82);
+  --surface-3: oklch(0.930 0.016 80);
+  --primary: oklch(0.405 0.105 153);
+  --primary-foreground: oklch(0.975 0.010 85);
+  --primary-soft: oklch(0.925 0.035 150);
+  --secondary: oklch(0.925 0.035 150);
+  --secondary-foreground: oklch(0.300 0.070 155);
+  --muted: oklch(0.950 0.014 82);
+  --muted-foreground: oklch(0.470 0.020 90);
+  --accent: oklch(0.940 0.030 60);
+  --accent-foreground: oklch(0.215 0.018 160);
+  --destructive: oklch(0.545 0.205 27);
+  --border: oklch(0.875 0.014 80);
+  --input: oklch(0.845 0.016 80);
+  --ring: oklch(0.550 0.120 153);
+  --success: oklch(0.515 0.125 150);
+  --warning: oklch(0.555 0.135 70);
+  --info: oklch(0.520 0.090 240);
+  --terracotta: oklch(0.565 0.145 42);
+  --terracotta-foreground: oklch(0.985 0.008 85);
+  --terracotta-soft: oklch(0.935 0.040 50);
+  --plum: oklch(0.500 0.120 330);
+  --plum-foreground: oklch(0.985 0.008 330);
+  --plum-soft: oklch(0.940 0.030 330);
+  --panel-accent: var(--primary);
+  --panel-accent-soft: var(--primary-soft);
+  --chart-1: oklch(0.470 0.110 153);
+  --chart-2: oklch(0.600 0.150 42);
+  --chart-3: oklch(0.660 0.140 78);
+  --chart-4: oklch(0.560 0.080 240);
+  --chart-5: oklch(0.560 0.100 330);
+  --radius: 0.5rem;
+  --float-shadow: 0 1px 2px oklch(0.2 0.02 160 / 0.06), 0 16px 40px -16px oklch(0.2 0.02 160 / 0.22);
+  --gradient-brand: linear-gradient(160deg, oklch(0.285 0.070 160) 0%, oklch(0.405 0.105 153) 60%, oklch(0.355 0.090 170) 100%);
+  --gradient-terracotta: linear-gradient(90deg, oklch(0.565 0.145 42), oklch(0.700 0.130 60));
+  /* admin sidebar = ink band */
+  --sidebar: oklch(0.255 0.050 157);
+  --sidebar-foreground: oklch(0.925 0.018 85);
+  --sidebar-primary: oklch(0.720 0.140 42);
+  --sidebar-primary-foreground: oklch(0.985 0.008 85);
+  --sidebar-accent: oklch(0.315 0.055 157);
+  --sidebar-accent-foreground: oklch(0.985 0.008 85);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.720 0.140 42);
+}
+
+/* ---------------------------------------------------------------------------
+   DARK: the same ledger by lamplight. Tone text stays the tone colour, never white on tone.
+   --------------------------------------------------------------------------- */
+.dark {
+  --background: oklch(0.165 0.012 160);
+  --foreground: oklch(0.935 0.014 85);
+  --card: oklch(0.205 0.012 160);
+  --card-foreground: oklch(0.935 0.014 85);
+  --popover: oklch(0.205 0.012 160);
+  --popover-foreground: oklch(0.935 0.014 85);
+  --surface-2: oklch(0.250 0.012 160);
+  --surface-3: oklch(0.290 0.012 160);
+  --primary: oklch(0.720 0.130 153);
+  --primary-foreground: oklch(0.165 0.040 155);
+  --primary-soft: oklch(0.270 0.045 155);
+  --secondary: oklch(0.270 0.045 155);
+  --secondary-foreground: oklch(0.900 0.050 150);
+  --muted: oklch(0.250 0.012 160);
+  --muted-foreground: oklch(0.700 0.016 85);
+  --accent: oklch(0.280 0.020 70);
+  --accent-foreground: oklch(0.935 0.014 85);
+  --destructive: oklch(0.700 0.180 25);
+  --border: oklch(1 0 0 / 11%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.650 0.120 153);
+  --success: oklch(0.740 0.135 152);
+  --warning: oklch(0.800 0.130 78);
+  --info: oklch(0.720 0.100 240);
+  --terracotta: oklch(0.730 0.130 45);
+  --terracotta-foreground: oklch(0.180 0.040 40);
+  --terracotta-soft: oklch(0.300 0.050 45);
+  --plum: oklch(0.760 0.110 330);
+  --plum-foreground: oklch(0.200 0.050 330);
+  --plum-soft: oklch(0.300 0.050 330);
+  --chart-1: oklch(0.720 0.130 153);
+  --chart-2: oklch(0.740 0.130 45);
+  --chart-3: oklch(0.820 0.110 88);
+  --chart-4: oklch(0.700 0.090 240);
+  --chart-5: oklch(0.700 0.100 330);
+  --float-shadow: 0 1px 2px oklch(0 0 0 / 0.4), 0 16px 40px -16px oklch(0 0 0 / 0.7);
+  --gradient-brand: linear-gradient(160deg, oklch(0.205 0.045 160) 0%, oklch(0.300 0.080 153) 60%, oklch(0.255 0.065 170) 100%);
+  --gradient-terracotta: linear-gradient(90deg, oklch(0.730 0.130 45), oklch(0.800 0.120 62));
+  --sidebar: oklch(0.135 0.012 160);
+  --sidebar-foreground: oklch(0.900 0.014 85);
+  --sidebar-primary: oklch(0.730 0.130 45);
+  --sidebar-primary-foreground: oklch(0.180 0.040 40);
+  --sidebar-accent: oklch(0.215 0.030 157);
+  --sidebar-accent-foreground: oklch(0.985 0.008 85);
+  --sidebar-border: oklch(1 0 0 / 8%);
+  --sidebar-ring: oklch(0.730 0.130 45);
+}
+
+/* ---------------------------------------------------------------------------
+   PANEL OVERRIDES. Doctor and patient sidebars are paper, not ink; the patient
+   panel's accent is terracotta, the doctor's stays green.
+   --------------------------------------------------------------------------- */
+[data-panel="doctor"],
+[data-panel="patient"] {
+  --sidebar: oklch(0.965 0.012 85);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+[data-panel="doctor"] {
+  --sidebar-accent: oklch(0.925 0.035 150);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+}
+[data-panel="patient"] {
+  --sidebar-accent: oklch(0.935 0.040 50);
+  --sidebar-primary: var(--terracotta);
+  --sidebar-primary-foreground: var(--terracotta-foreground);
+  --panel-accent: var(--terracotta);
+  --panel-accent-soft: var(--terracotta-soft);
+}
+.dark [data-panel="doctor"],
+.dark [data-panel="patient"] {
+  --sidebar: oklch(0.185 0.012 160);
+  --sidebar-border: oklch(1 0 0 / 10%);
+}
+.dark [data-panel="doctor"] {
+  --sidebar-accent: oklch(0.270 0.045 155);
+}
+.dark [data-panel="patient"] {
+  --sidebar-accent: oklch(0.300 0.050 45);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+    font-variant-numeric: lining-nums;
+  }
+}
+
+/* ============================================================================
+   CURSOR POLICY
+   Tailwind v4 preflight gives <button> no cursor, and the shadcn menu/select/command
+   items hard-code `cursor-default` (components/ui/select.tsx 114/150/169,
+   dropdown-menu.tsx 75/97/141/228, command.tsx 158).
+
+   Rules 1-4 live in @layer base. Utilities sit in a later layer, so a deliberate
+   `cursor-text` (input-group.tsx:26), `cursor-grab`, or the sidebar rail's
+   variant-prefixed `cursor-w-resize` (sidebar.tsx 292-293) wins on its own, and
+   :where() keeps every selector at zero specificity so inline styles win too.
+
+   Rule 5 is unlayered on purpose: unlayered author CSS beats every layer, which is
+   the only way to beat the `cursor-default` utility without editing the primitives.
+
+   Disabled controls: an element with pointer-events:none shows its PARENT's cursor,
+   never its own, so the companion edits in components/ui swap
+   `disabled:pointer-events-none` for `disabled:cursor-not-allowed` (button.tsx:7,
+   tabs.tsx:65, toggle.tsx:9, accordion.tsx:44, sidebar.tsx:469/669, input.tsx:10,
+   label.tsx:15). Radix items disabled through data-disabled keep pointer-events-none
+   and show the arrow; that is intentional (it also keeps Radix from highlighting them).
+
+   cmdk writes data-disabled="false" on ENABLED items (command.tsx:158 checks =true for
+   the same reason), so every disabled check excludes that value.
+   ========================================================================== */
+@layer base {
+  /* 1. Pointer on everything a person can click, toggle, pick or open. */
+  :where(
+    button, select, summary, a[href], area[href],
+    label[for],
+    label:has(input, select, textarea, button, [role="checkbox"], [role="radio"], [role="switch"]),
+    input:is([type="button"], [type="submit"], [type="reset"], [type="image"], [type="checkbox"], [type="radio"], [type="range"], [type="file"], [type="color"]),
+    [role="button"], [role="link"], [role="tab"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"],
+    [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [role="treeitem"], [role="slider"],
+    [role="combobox"]:not(input),
+    [data-slot="checkbox"], [data-slot="switch"], [data-slot="radio-group-item"],
+    [data-slot="tabs-trigger"], [data-slot="toggle"], [data-slot="toggle-group-item"],
+    [data-slot="accordion-trigger"], [data-slot="collapsible-trigger"],
+    [data-slot="sidebar-menu-button"], [data-slot="sidebar-menu-action"], [data-slot="sidebar-group-action"], [data-slot="sidebar-menu-sub-button"],
+    [data-slot="select-item"], [data-slot="select-scroll-up-button"], [data-slot="select-scroll-down-button"],
+    [data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox-item"], [data-slot="dropdown-menu-radio-item"], [data-slot="dropdown-menu-sub-trigger"],
+    [data-slot="command-item"], [cmdk-item],
+    [data-clickable]
+  ):not(:disabled, [aria-disabled="true"], [data-disabled]:not([data-disabled="false"])) {
+    cursor: pointer;
+  }
+  /* the inner button of <input type="file"> is a separate pseudo-element */
+  ::file-selector-button {
+    cursor: pointer;
+  }
+
+  /* 2. Typing surfaces keep the I-beam, even inside a pointer label or a clickable row
+        (cursor is inherited, so this has to be explicit). */
+  :where(
+    input:not([type="button"], [type="submit"], [type="reset"], [type="image"], [type="checkbox"], [type="radio"], [type="range"], [type="file"], [type="color"]),
+    textarea,
+    [contenteditable]:not([contenteditable="false"]),
+    [role="textbox"], [role="searchbox"]
+  ):not(:disabled, [aria-disabled="true"]) {
+    cursor: text;
+  }
+
+  /* 3. Disabled things say so: native, ARIA, Radix data-disabled, anything inside a
+        disabled <fieldset>, and the label that wraps a disabled control. */
+  :where(
+    button, input, select, textarea, summary, a, label,
+    [role="button"], [role="link"], [role="tab"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"],
+    [role="option"], [role="checkbox"], [role="radio"], [role="switch"], [role="combobox"], [role="treeitem"], [role="slider"],
+    [data-slot], [cmdk-item], [data-clickable]
+  ):is(:disabled, [aria-disabled="true"], [data-disabled]:not([data-disabled="false"])),
+  :where(fieldset:disabled) :where(button, input, select, textarea, label, [role="button"], [role="checkbox"], [role="radio"], [role="switch"]),
+  :where(label, [data-slot="field-label"]):has(:disabled, [aria-disabled="true"], [data-disabled]:not([data-disabled="false"])) {
+    cursor: not-allowed;
+  }
+
+  /* 4. Busy and draggable. Button `loading` sets aria-busy; later in source than rule 3,
+        so a loading+disabled button shows progress, not not-allowed. */
+  :where(button, [role="button"], a[href], [data-clickable], form)[aria-busy="true"] {
+    cursor: progress;
+  }
+  :where([draggable="true"]) {
+    cursor: grab;
+  }
+  :where([draggable="true"]):active {
+    cursor: grabbing;
+  }
+}
+
+/* 5. Unlayered: these slots carry a hard-coded `cursor-default` utility. */
+:where(
+  [data-slot="select-item"], [data-slot="select-scroll-up-button"], [data-slot="select-scroll-down-button"],
+  [data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox-item"], [data-slot="dropdown-menu-radio-item"], [data-slot="dropdown-menu-sub-trigger"],
+  [data-slot="command-item"]
+):not([aria-disabled="true"], [data-disabled]:not([data-disabled="false"])) {
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------------------
+   Ledger helpers
+   --------------------------------------------------------------------------- */
+/* Tabular lining numerals for tables, DetailList, StatCard and money cells. */
+@utility ledger {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum", "lnum";
+}
+
+/* Paper grain, only on ink bands (PageHero tone=ink, AuthFrame aside). Never on body. */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.14;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px;
+}
+.dark .grain::after {
+  opacity: 0.1;
+  mix-blend-mode: screen;
+}
+
+/* The one glass surface: the sticky panel header. */
+.glass-header {
+  background: color-mix(in oklch, var(--background) 85%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid color-mix(in oklch, var(--foreground) 18%, transparent);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-header {
+    background: var(--background);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass-header {
+    background: var(--background);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .grain::after {
+    display: none;
+  }
+}
+
+/* The rupee sign has no glyph in Fraunces; set it in the text face so it sits on the baseline. */
+number-flow-react::part(symbol) {
+  font-family: var(--font-sans);
+  font-size: 0.78em;
+  font-weight: 600;
+}
+.font-display .rupee, .rupee {
+  font-family: var(--font-sans);
+  font-size: 0.78em;
+  font-weight: 600;
+}
+
+/* sonner toasts (components/ui/sonner.tsx names this class but nothing defined it) */
+.cn-toast {
+  font-family: var(--font-sans);
+  border: 1px solid var(--border);
+  box-shadow: var(--float-shadow);
+}
+
+/* Radix hides the scrollbar of an open dropdown; show a thin one so long lists are clearly scrollable. */
+[data-radix-select-viewport] {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* Panels that scroll on their own (filter panel, long option lists) get a slim, quiet scrollbar. */
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--foreground) 22%, transparent) transparent;
+}
+
+/* Motion: custom components also read useReducedMotion(); this is the floor. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print: any panel page prints as a clean sheet (Rx sheet, invoices, order sheets). */
+@media print {
+  [data-slot="sidebar"],
+  [data-slot="sidebar-gap"],
+  [data-slot="panel-header"],
+  [data-sonner-toaster],
+  .print-hidden,
+  .grain::after {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+  main {
+    padding: 0 !important;
+  }
+  .glass-header {
+    position: static;
+    backdrop-filter: none;
+  }
+}

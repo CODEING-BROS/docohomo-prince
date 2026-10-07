@@ -1,0 +1,332 @@
+.doctors {
+  padding: 30px;
+  display: flex;
+  // flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.qr-container {
+  // width: max(20%, 20rem);
+  // width: 100px;
+  width: calc(33.33% - 20px); /* Adjust the width as needed */
+  margin: 10px; /* Add margin to create spacing between items */
+  box-sizing: border-box;
+  background-color: var(--white);
+  text-align: center;
+  align-content: center;
+  margin-right: 10px;
+  // margin: 10px;
+  position: relative;
+  border-radius: 20px;
+  gap: 0.2rem;
+  // box-shadow: -10px 8px 20px -11px rgba(0, 0, 0, 0.62);
+  // -webkit-box-shadow: -2px 10px 24px -11px rgba(0, 0, 0, 0.62);
+  // -moz-box-shadow: -2px 10px 24px -11px rgba(0, 0, 0, 0.62);
+}
+
+@media (max-width: 768px) {
+  .qr-container {
+    width: calc(50% - 20px); /* Adjust for smaller screens */
+  }
+}
+@media only screen and (max-width: 576px) {
+  .doctorsection .qr-container {
+    width: 144px;
+    padding: 0%;
+    align-items: center;
+    height: 313px;
+  }
+}
+
+/** Image Block **/
+.img-block img {
+  display: block;
+  height: 190px;
+  width: 190px;
+  margin: auto;
+  border-radius: 10px;
+  margin-top: 1.2rem;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 576px) {
+  .doctorsection .img-block {
+    width: auto;
+    height: auto;
+    border-radius: 100%;
+  }
+  .doctorsection .img-block img {
+    width: 92%;
+    -o-object-fit: contain;
+    object-fit: contain;
+    border-radius: 52px;
+  }
+}
+/** Info Block **/
+.info-block {
+  position: relative;
+  bottom: 0%;
+  z-index: 2;
+  padding: 1.2rem;
+}
+.docinfo {
+  margin-top: 10px;
+  font-size: 10px;
+  line-height: 0.5rem;
+  font-weight: bold;
+  color: var(--dark-blue);
+}
+
+.info-block p {
+  padding: 1rem;
+  word-spacing: 1px;
+  color: var(--grayish-blue);
+}
+
+// .rectangle {
+//   width: 235px;
+//   height: 50px;
+//   position: absolute;
+//   z-index: 1;
+//   top: 55%;
+//   left: 24%;
+//   font-weight: bold;
+//   //background-color: #3498db; /* Blue background */
+//   // background-color: #ff4742;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   border-radius: 5%;
+//   gap: 10px;
+//   align-items: center;
+//   color: black;
+// }
+
+@media only screen and (max-width: 576px) {
+  .doctorsection .rectangle {
+    width: 100px;
+    left: 18px;
+    top: 55%;
+  }
+
+  .info-block {
+    position: relative;
+    top: -32px;
+    left: -14px;
+  }
+
+  .doctorsection h4 {
+    font-size: 11px;
+  }
+}
+
+.button-24 {
+  background: #ff4742;
+  border: 1px solid #ff4742;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+  box-sizing: border-box;
+  margin-top: 10px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
+  font-size: 12px;
+  font-weight: bolder;
+  line-height: 16px;
+  min-height: 40px;
+  outline: 0;
+  padding: 12px 14px;
+  text-align: center;
+  text-rendering: geometricprecision;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+}
+
+.button-24:hover,
+.button-24:active {
+  background-color: initial;
+  background-position: 0 0;
+  color: #ff4742;
+}
+
+.button-24:active {
+  opacity: 0.5;
+}
+
+h1 {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  font-family: "Raleway", sans-serif;
+  font-weight: 300;
+  font-size: 40px;
+  color: #080808;
+  -webkit-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+}
+
+h1 span {
+  display: block;
+  font-size: 0.5em;
+  line-height: 1.3;
+}
+h1 em {
+  font-style: normal;
+  font-weight: 600;
+}
+
+.two h1 {
+  text-transform: capitalize;
+}
+.two h1:before {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 60px;
+  height: 2px;
+  content: "";
+  background-color: #c50000;
+}
+
+.two h2 span {
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  line-height: 3em;
+  padding-left: 0.25em;
+  color: rgba(0, 0, 0, 0.4);
+  padding-bottom: 10px;
+}
+.alt-two h1 {
+  margin: 25px;
+  text-align: center;
+}
+.alt-two h1:before {
+  left: 50%;
+  margin-left: -30px;
+}
+.doctorsection {
+  padding-top: 20px;
+}
+.doctorsection .two h1 {
+  font-weight: bold;
+}
+.doctorsection .two {
+  margin-bottom: 20px;
+}
+
+.productsTwo .slick-arrow.slick-next {
+  right: -30px;
+}
+.productsTwo .slick-arrow.slick-prev {
+  left: -30px;
+}
+
+// custom css anjali
+.doctorsection .two h2 {
+  font-family: Raleway, sans-serif;
+  font-size: 40px;
+  position: relative;
+}
+.doctorsection .two span {
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  line-height: 3em;
+  padding-left: 0.25em;
+  color: rgba(0, 0, 0, 0.4);
+  padding-bottom: 10px;
+  font-family: Raleway, sans-serif;
+  display: block;
+}
+.doctorsection .two h2:before {
+  position: absolute;
+  left: 0;
+  bottom: 10px;
+  width: 60px;
+  height: 3px;
+  content: "";
+  background-color: #c50000;
+}
+@media only screen and (max-width: 425px) {
+  .doctorsection .two span {
+    font-size: 10px;
+    letter-spacing: 3px;
+    line-height: 20px;
+    padding: 5px 0px;
+  }
+  .doctorsection .two h2:before {
+    bottom: -5px;
+  }
+  .doctorsection .qr-container {
+    width: 142px;
+  }
+  .doctorsection .two h2 {
+    font-family: Raleway, sans-serif;
+    font-size: 25px;
+    position: relative;
+  }
+  .doctorsection .img-block img {
+    width: 100%;
+    border-radius: 0;
+    height: auto;
+  }
+  .doctorsection .qr-container {
+    height: 285px;
+    margin: 4px;
+    overflow: hidden;
+    @media screen and (max-device-width: 550px) {
+      padding: 20px 20px;
+    }
+  }
+  .doctorsection__wrapper {
+    justify-content: space-around;
+    margin-bottom: 40px;
+  }
+  .doctorsection .rectangle {
+    left: 0%;
+    top: 58%;
+    transform: translate(0%, 0%);
+    width: 100%;
+    -webkit-transform: translate(0%, 0%);
+    -moz-transform: translate(0%, 0%);
+    -ms-transform: translate(0%, 0%);
+    -o-transform: translate(0%, 0%);
+  }
+  .info-block {
+    top: 0;
+  }
+  .doctorsection h4 {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 10px;
+  }
+  .doctorsection .info-block {
+    width: auto;
+    text-align: center;
+    padding: 15px 0px;
+  }
+  .info-block {
+    left: 0;
+  }
+  .doctorsection .rectangle {
+    padding: 10px 10px;
+  }
+  .doctorsection .rectangle .text1 {
+    font-size: 10px;
+  }
+  .doctorsection .button-24 {
+    font-size: 10px;
+  }
+  .doctorsection .rectangle .text2 {
+    font-size: 8px;
+  }
+}

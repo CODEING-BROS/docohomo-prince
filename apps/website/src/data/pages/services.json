@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Body treatment",
+    "description": "Dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis pendisse ultrices gravida. Risus commodo viverra lacus vel facilisis.",
+    "bigImgSrc": "/assets/images/contact/1_1.png",
+    "smallImgSrc": "/assets/images/contact/1.png"
+  },
+  {
+    "title": "Professinal makeup",
+    "description": "Dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis pendisse ultrices gravida. Risus commodo viverra lacus vel facilisis.",
+    "bigImgSrc": "/assets/images/contact/2_1.png",
+    "smallImgSrc": "/assets/images/contact/2.png"
+  },
+  {
+    "title": "Maincure & pedicure",
+    "description": "Dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis pendisse ultrices gravida. Risus commodo viverra lacus vel facilisis.",
+    "bigImgSrc": "/assets/images/contact/3_1.png",
+    "smallImgSrc": "/assets/images/contact/3.png"
+  },
+  {
+    "title": "Hair cut & Coloring",
+    "description": "Dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis pendisse ultrices gravida. Risus commodo viverra lacus vel facilisis.",
+    "bigImgSrc": "/assets/images/contact/4_1.png",
+    "smallImgSrc": "/assets/images/contact/4.png"
+  }
+]

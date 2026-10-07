@@ -1,0 +1,15 @@
+  .product-categories {
+    padding: 20px;
+    &__wrapper {
+      margin-bottom: remCal(60);
+      //padding: 30px;
+      padding: emCal(16, 50);
+    }
+  
+    .card {
+      width: 200px;
+      height: 200px;
+      margin: auto;
+    }
+  }
+  

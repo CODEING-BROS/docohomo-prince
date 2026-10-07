@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Body treatment",
+    "videoPoster": "/assets/images/introduction/IntroductionTwo/1.png",
+    "videoSrc": "https://www.youtube.com/embed/80e0QHPYRG4"
+  },
+  {
+    "name": "Professinal makeup",
+    "videoPoster": "/assets/images/introduction/IntroductionTwo/2.png",
+    "videoSrc": "https://www.youtube.com/embed/xn7jfVWWSio"
+  },
+  {
+    "name": "Maincure & pedicure",
+    "videoPoster": "/assets/images/introduction/IntroductionTwo/3.png",
+    "videoSrc": "https://www.youtube.com/embed/K3M-czGNUCg"
+  },
+  {
+    "name": "Hair cut & Coloring",
+    "videoPoster": "/assets/images/introduction/IntroductionTwo/4.png",
+    "videoSrc": "https://www.youtube.com/embed/hoPiGLf0ICA"
+  }
+]

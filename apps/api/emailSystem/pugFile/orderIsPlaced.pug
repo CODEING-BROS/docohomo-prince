@@ -1,0 +1,214 @@
+doctype html
+html
+    head
+        meta(charset="utf-8")
+        meta(http-equiv="X-UA-Compatible" content="IE=edge")
+        meta(content='width=device-width, initial-scale=1.0' name='viewport')
+        style(type='text/css').
+            * {
+            box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+                font-size: 13px;
+                line-height: 135%;
+                color: #808080;
+            }
+            .productImageLink{
+                width:110px;
+                height:130px;
+            }
+            .managepadding{
+                padding:0;
+            }
+            .heading_block{
+                width: 90%;
+                margin: 16px auto 0;
+                background: #fff;
+                border-radius: 8px;
+                padding: 10px 16px;
+            }
+            .orderDate{
+                display: block;
+            }
+            .hideDate{
+                display: none;
+            }
+            @media (max-width: 550px) {
+                .productImageLink{
+                    width:90px !important;
+                    height:110px !important;
+                }   
+                .contentwidth{
+                    width:100% !important;
+                }
+                .heading_block{
+                    width: 98%;
+                }
+                .orderDate{
+                    display: none;
+                }
+                .hideDate{
+                    display: block;
+                }
+            }
+    //- - var data= {"_id":"65e60d45b5e3e2e81bdcdd63","order_id":"order-7842-383629-7986","tid":"COD","paymentType":"-","total_amount":"230","delivery_charges":"55","razorpay_payment_id":"-","customer_id":"65ddad988fb58aefc3823c2f","customer_name":"himanshi parmar","customer_phone_number":7023544413,"customer_email":"himanshiparmar22@gmail.com","order_status":"delivered","products":[{"price":110,"product_images":[],"images":[{"image_name":"Mon, 22 Jan 2024 13:22:07 GMT--mel.jpg","image_url":"https://firebasestorage.googleapis.com/v0/b/dochomoeo-1d821.appspot.com/o/dochomoeo%2Fproducts%2FWheezal%20Mel-X%20Melasma%20Cream%20(25g)%2FMon%2C%2022%20Jan%202024%2013%3A22%3A07%20GMT--mel.jpg?alt=media&token=9dcd8962-5a1f-46fb-95d1-2b14b52cd541","path":"/dochomoeo/products/Wheezal Mel-X Melasma Cream (25g)/","_id":"65ae6b79dcfd19aaf038d862"}],"productID":"65ae6b79dcfd19aaf038d861","id":"prod_002159","category":"disease","name":"wheezal mel-x melasma cream (25g) homeopathic ointment for skin pigmentation like melasma, chloasma,, and premature aging of the skin","rate":4,"new":false,"brand":"wheezal","code":"Wheezal Mel-X Melasma Cream (25g)","cartQuantity":1,"_id":"65e60d45b5e3e2e81bdcdd64"},{"price":65,"product_images":[],"images":[{"image_name":"Thu, 05 Oct 2023 10:57:11 GMT--sbl_acid_chryso_ointment_25_gm_0.jpg","image_url":"https://firebasestorage.googleapis.com/v0/b/dochomoeo-1d821.appspot.com/o/dochomoeo%2Fproducts%2Fsblacidchrysoointment%2FThu%2C%2005%20Oct%202023%2010%3A57%3A11%20GMT--sbl_acid_chryso_ointment_25_gm_0.jpg?alt=media&token=967925e1-eb40-423d-a83d-a474979becfe","path":"/dochomoeo/products/sblacidchrysoointment/","_id":"651e968a3968cc9827b73d8c"}],"productID":"651e968a3968cc9827b73d8b","id":"prod_00549","category":"disease","name":"sbl acid chryso ointment 25gm","rate":4,"new":false,"brand":"sbl","code":"sblacidchrysoointment","cartQuantity":1,"_id":"65e60d45b5e3e2e81bdcdd65"}],"shipping_address":"1590 house no, sector 10-A, Near meenakshi public schoolundefined","state":"haryana","pincode":122001,"createdAt":"2024-03-04T18:04:53.280Z","updatedAt":"2024-03-10T20:56:28.369Z","__v":0}
+
+    body
+        table(style="width:100%; border-collapse:collapse;")
+            tbody
+                tr
+                    td(style="border-collapse:collapse; padding: 0 0 24px;font-family:Spartan,sans-serif !important;background:#e5e5e5") 
+                        table.contentwidth(align='center' style="width: 650px; border-collapse:collapse;")
+                            tbody
+                                tr
+                                    td
+                                        table.heading_block(border='0' cellpadding='10' cellspacing='0' role='presentation' style="margin-top: 0" width='100%' )
+                                            tr 
+                                                td(style="padding:5px;padding:5px 0;") 
+                                                    div(style="text-align: left;")
+                                                        img(src='https://dochomoeo.com/doc.png' style='display: block; height: auto; border: 0; width: 70px; max-width: 100%;' alt='image' title='image')
+                                                td(style="text-align: right;")
+                                                    a(href=`https://dochomoeo.com`, title="Visit " style="text-decoration:none;color:#3b8d5d;font-size: 18px; font-weight: 600;" target="_blank", data-saferedirecturl=`https://dochomoeo.com`)
+                                                        | DOCHOMOEO
+                                        table.heading_block(border='0' cellpadding='10' cellspacing='0' role='presentation' width='100%' )
+                                            tr 
+                                                td.managepadding(style="font-size: 18px; padding-bottom: 13px;padding: 5px 0; color:black; text-transform: capitalize;") 
+                                                    strong Dear #{data.customer_name.split(" ")[0]},
+                                            //- tr 
+                                            //-     td.managepadding(style="font-size: 16px; font-weight: 500; padding: 5px 0 13px;color:black;") 
+                                            //-         | We’re glad that you chose us as your health companion!
+
+                                            tr
+                                                td.managepadding(style=" padding:10px 0; ") 
+                                                    | Thank you for choosing DocHomoeo for your wellness needs. We're excited to confirm that your order has been successfully placed. Here are the details:
+                                            //- tr
+                                            //-     td.managepadding(style="padding:0 0 1rem; ") 
+                                            //-         | You can now Pay Online and get extra 5% OFF for your order by clicking  here. Online Payment is valid till the order is packed by the Pharmacists.
+                                            tr
+                                                td.managepadding(style="color:#3b8d5d; font-size:20px; padding: 5px 0; ") 
+                                                    strong Order Is Placed
+                                            //- tr
+                                            //-     td.managepadding(style="color: #252525; font-size: 12px;") Next update in 30 minutes
+                                            //- tr
+                                            //-     td.managepadding(style="padding: 5px 0")
+                                            //-         button(style="font-size:14px; width: 100%; background: #3b8d5d; color:white; border:none; padding: 10px; margin-top: 10px; border-radius: 8px") TRACK ORDER
+                                        
+                                        table.heading_block(border='0' cellpadding='10' cellspacing='0' role='presentation' width='100%' )
+                                            tr
+                                                td.managepadding(style="color:#252525; font-size:18px; padding: 5px 0; width: max-content ") 
+                                                    strong(style="white-space: nowrap") Order Details
+                                                td.managepadding.orderDate(style="padding: 5px 0; color: #252525;text-align: right; font-weight: 600; text-wrap:nowrap ") 
+                                                    | Order Date: #{date}
+                                            tr.hideDate    
+                                                td.managepadding.hideDate(style="padding: 5px 0; color: #252525; font-weight: 600; text-wrap:nowrap ") 
+                                                    | Order Date: #{date}
+                                            tr
+                                                td.managepadding(style="padding: 5px 0; color: #252525; font-weight: 600 " colspan="2") 
+                                                    | Order ID: #{data.order_id}
+
+                                            tr
+                                                td.managepadding(style=" font-weight: 600; padding:5px 0;color:black; ") To be Paid 
+                                                td.managepadding(style="padding:5px 0;color:black; white-space: nowrap;") 
+                                                    div(style="text-align: right; font-weight: 600") Rs. #{data.tid==="COD"?data.total_amount:"0.00"}
+                                            tr 
+                                                td(style="padding:0" colspan="2")
+                                                    div(style="border: 1px solid #b0b0b0; margin: 5px 0;")
+                                            - let total = 0;
+                                            tr 
+                                                td(style="padding:0" colspan="2")
+                                                    table(border='0' cellpadding='10' cellspacing='0' role='presentation' width='100%' style={} )
+                                                        if(data.products)
+                                                            each product in data.products
+                                                                - total+= product.cartQuantity * product.price
+                                                                tr
+                                                                    td.managepadding(rowspan="2" style="padding-right: 5px; width: 46px")
+                                                                        img(src=`${product.images[0].image_url}`  width="45px" alt="" style="border: 1px solid #808080; border-radius: 50%; padding: 3px; background: #fff")
+                                                                    td.managepadding()
+                                                                        a(style="color: #3b8d5d; text-decoration: none; font-weight: bold; padding:5px 0; " href=`https://dochomoeo.com/shop/product/${product.productID}`) #{product.name.length>=30?product.name.substring(0,30)+"...":product.name}
+                                                                    //- td.managepadding(style="padding:3px 0;color:black; ") 
+                                                                tr
+                                                                    td.managepadding(style="padding:5px 0;") Quantity: #{product.cartQuantity} X Rs. #{product.price}
+                                                                        del(style="margin-left:10px;") (Rs. #{product.regular_price})
+                                                                    td.managepadding
+                                                                        div(style="text-align: right;white-space: nowrap;padding:5px 0; color:#252525; ") Rs. #{parseInt(product.cartQuantity)*parseInt(product.price)}
+                                            tr 
+                                                td(style="padding:0" colspan="2")
+                                                    div(style="border: 1px solid #b0b0b0; margin: 5px 0;")
+                                            tr
+                                                td.managepadding(style="padding:5px 0;") Sub Total
+                                                td.managepadding(style=" color:#252525; padding:0 0;  white-space: nowrap") 
+                                                    div(style="text-align: right") Rs. #{data.total_amount - (data.delivery_charges > 0 ? data.delivery_charges : 0)}
+                                            if(data.delivery_charges>0)
+                                                tr
+                                                    td.managepadding(style="padding:5px 0;") Shipping Fee
+                                                    td.managepadding(style="padding:0 0;color:black; ") 
+                                                        div(style="color:#252525; text-align: right;white-space: nowrap") (+) Rs. #{data.delivery_charges}
+                                            if data.tid==="COD"
+                                                tr
+                                                    td.managepadding(style="padding:5px 0;") COD Charges
+                                                    td.managepadding(style="padding:5px 0;color:#252525; ") 
+                                                        div(style="text-align: right; white-space: nowrap") (+) Rs. 30
+                                            if data.tid!=="COD"
+                                                tr
+                                                    td.managepadding(style="padding:5px 0;") Offer on Online Payment 
+                                                    td.managepadding(style="padding:5px 0;color:#252525; ") 
+                                                        div(style="text-align: right; white-space: nowrap") (-) Rs. #{parseInt(total)*0.05}
+                                            if data.tid!=="COD"
+                                                tr
+                                                    td.managepadding(style="padding:5px 0;")| PrePaid Discount 
+                                                    td.managepadding(style="padding:5px 0;color:#252525; ") 
+                                                        div(style="text-align: right; white-space: nowrap") (-) Rs. #{data.total_amount}
+                                            tr
+                                                td.managepadding(style="padding:5px 0; color:#252525; font-weight: 600")| To be Paid 
+                                                td.managepadding(style="padding:5px 0;color:#252525; font-weight: 600") 
+                                                    div(style="text-align: right; white-space: nowrap") Rs. #{data.tid==="COD"?data.total_amount:"0.00"}
+                                        table.heading_block(border='0' cellpadding='10' cellspacing='0' role='presentation' width='100%' )
+                                            tr 
+                                                td.managepadding(style=" font-weight: 600; padding:5px 0;")
+                                                    p(style="margin-top:0;  font-weight: 500; ") Your order is now being processed and will be shipped shortly. We'll send you another email with the tracking information once your package is on its way.
+                                                    p(style="margin:0;  font-weight: 500;") If you have any questions or concerns regarding your order, feel free to reach out to our customer support team at 
+                                                        a(href="mailTo: contact.dochomoeo@gmail.com " style="text-decoration:none;" ) 
+                                                           strong contact.dochomoeo@gmail.com
+                                                        |  or call us at 
+                                                        a(href="tel: 01169166357" style="text-decoration:none;" ) 
+                                                            strong 01169266357 
+                                                        |  We're here to assist you every step of the way.
+
+                                        table.heading_block(border='0' cellpadding='10' cellspacing='0' role='presentation' width='100%' )
+                                            tr
+                                                td.managepadding(style="font-size: 18px; font-weight: 600; padding:5px 0;color:black; ") 
+                                                    | Shipping Address
+                                                td.managepadding(style="padding:5px 0;color:black; white-space: nowrap;") 
+                                                    div(style="text-align: right; font-weight: 600; text-transform: capitalize") #{data.state}
+                                            tr 
+                                                td.managepadding(style="padding:5px 0; ")
+                                                    div #{data.customer_name}
+                                                    div #{data.shipping_address}
+                                                    div #{data.state}-#{data.pincode}
+                                                    br
+                                                    div Phone: #{data.customer_phone_number}
+                                        table.heading_block(border='0' cellpadding='10' cellspacing='0' role='presentation' width='100%' )
+                                            tr 
+                                                td.managepadding(style=" font-weight: 600; padding:5px 0;")
+                                                    p(style="margin-top:0; font-size:12px; font-weight: 500") Thank you for your trust in DocHomoeo. We look forward to serving you again in the future.
+                                                    p(style="margin-top:0; color: #252525") Regards
+                                                    p(style="margin-bottom:0; color: #3b8d5d") TEAM DOCHOMOEO
+                                        table.heading_block(border='0' cellpadding='10' cellspacing='0' role='presentation' width='100%' )
+                                            tr 
+                                                td.managepadding(style="padding:5px 0;color: #252525;  text-align:center")
+                                                    a(href="https://dochomoeo.com/contact" target="_blank" style="text-decoration: none; color: #252525") 
+                                                        span(style="color: #3b8d5d;") Need Help? 
+                                                    span Click to contact us for queries.
+                                            tr 
+                                                td.managepadding
+                                                    div(style="width:fit-content; margin: 0 auto; padding-top: 10px")
+                                                        a(href="https://www.facebook.com/share/nk8N5g92GCsG3PXD/?mibextid=qi2Omg" target="_blank" style="padding: 0 10px;")
+                                                            img(src="https://firebasestorage.googleapis.com/v0/b/dochomoeo-1d821.appspot.com/o/Facebook-Logo_dochomoeo.png?alt=media&token=b7d9dbf9-dc33-4226-ac6b-3fdf53ce59ad", alt="facebook" height="20px")
+                                                        a(href="https://www.youtube.com/channel/UC5jJrNIThYsBzB35P_nt1-A" target="_blank" style="padding: 0 10px;")
+                                                            img(src="https://firebasestorage.googleapis.com/v0/b/dochomoeo-1d821.appspot.com/o/Youtube_logo_PNG3.png?alt=media&token=58ab4533-c4af-4ba9-8511-d8bec4dd8f3e", alt="youtube" height="20px")
+                                                        a(href="https://www.instagram.com/dochomoeo?igsh=b24zdTRrZ3lxN3U1" target="_blank" style="padding: 0 10px;")
+                                                            img(src="https://firebasestorage.googleapis.com/v0/b/dochomoeo-1d821.appspot.com/o/InstagramPNG.png?alt=media&token=08d665fd-94b3-41b9-8918-235ed08afa16", alt="instagram" height="20px")
+                                                        a(href="https://twitter.com/DocHomoeo" target="_blank" style="padding: 0 10px;")
+                                                            img(src="https://firebasestorage.googleapis.com/v0/b/dochomoeo-1d821.appspot.com/o/Twitter_logo_PNG11.png?alt=media&token=91e74b94-1678-46da-84a1-6a78616d6616", alt="twitter" height="20px")

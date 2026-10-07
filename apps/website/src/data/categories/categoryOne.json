@@ -1,0 +1,17 @@
+[
+  {
+    "image": "/assets/images/category/CategoryOne/1.png",
+    "category": "Cheek & Coutour",
+    "quantity": 120
+  },
+  {
+    "image": "/assets/images/category/CategoryOne/2.png",
+    "category": "Eyes",
+    "quantity": 86
+  },
+  {
+    "image": "/assets/images/category/CategoryOne/3.png",
+    "category": "Palettes",
+    "quantity": 216
+  }
+]

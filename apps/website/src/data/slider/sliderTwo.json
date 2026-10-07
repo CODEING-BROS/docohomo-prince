@@ -1,0 +1,49 @@
+[
+  {
+    "title": { "span": "Better", "main": "than before" },
+    "btn": {
+      "content": "Shop now",
+      "color": "white",
+      "href": "#"
+    },
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+    "image": "/assets/images/slider/SliderTwo/1.png",
+    "animationClass": {
+      "title": "slider-one-title",
+      "description": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  },
+  {
+    "subTitle": "Outstanding Beauty",
+    "title": { "main": "For your nail" },
+    "btn": {
+      "content": "Shop now",
+      "color": "dark",
+      "href": "#"
+    },
+    "description": "Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. ",
+    "image": "/assets/images/slider/SliderTwo/2.png",
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "description": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  },
+  {
+    "subTitle": "Fragrances that make moments",
+    "title": { "main": "Unforgettable" },
+    "btn": {
+      "content": "Shop now",
+      "color": "white",
+      "href": "#"
+    },
+    "image": "/assets/images/slider/SliderTwo/3.png",
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  }
+]

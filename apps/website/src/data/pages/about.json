@@ -1,0 +1,26 @@
+[
+  {
+    "name": "2006",
+    "description": "Supro was born",
+    "videoPoster": "/assets/images/introduction/IntroductionTwo/1.png",
+    "videoSrc": "https://www.youtube.com/embed/80e0QHPYRG4"
+  },
+  {
+    "name": "2010",
+    "description": "We went international, lauching in Lodon and the US.",
+    "videoPoster": "/assets/images/introduction/IntroductionTwo/2.png",
+    "videoSrc": "https://www.youtube.com/embed/xn7jfVWWSio"
+  },
+  {
+    "name": "2015",
+    "description": "We hit 1 mil followers on Facebook Opened Sydney office",
+    "videoPoster": "/assets/images/introduction/IntroductionTwo/3.png",
+    "videoSrc": "https://www.youtube.com/embed/K3M-czGNUCg"
+  },
+  {
+    "name": "2020",
+    "description": "1000+ employees and we launched Supro Premium",
+    "videoPoster": "/assets/images/introduction/IntroductionTwo/4.png",
+    "videoSrc": "https://www.youtube.com/embed/hoPiGLf0ICA"
+  }
+]

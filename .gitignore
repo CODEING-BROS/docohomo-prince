@@ -1,0 +1,19 @@
+node_modules/
+.next/
+out/
+build/
+.DS_Store
+npm-debug.log*
+
+# env files hold credentials; .env.live files are the original production secrets
+.env
+.env.*
+!.env.example
+
+# assistant and editor files
+CLAUDE.md
+AGENTS.md
+.claude/
+.cursor/
+.vscode/
+.idea/

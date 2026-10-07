@@ -1,0 +1,50 @@
+[
+  {
+    "title": { "main": "Natural cosmetics" },
+    "btn": {
+      "content": "Shop now",
+      "color": "red",
+      "href": "#"
+    },
+    "description": "Best treatment for curing stubborn whiteheads —  your skin loves it",
+    "image": "/assets/images/slider/SliderThree/3.png",
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "description": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  },
+  {
+    "title": { "main": "Professional" },
+    "btn": {
+      "content": "Shop now",
+      "color": "red",
+      "href": "#"
+    },
+    "description": "Best treatment for curing stubborn whiteheads —  your skin loves it",
+    "image": "/assets/images/slider/SliderThree/2.png",
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "description": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  },
+  {
+    "title": { "main": "Awesome Store" },
+    "btn": {
+      "content": "Shop now",
+      "color": "red",
+      "href": "#"
+    },
+    "description": "Best treatment for curing stubborn whiteheads —  your skin loves it",
+    "image": "/assets/images/slider/SliderThree/1.png",
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "description": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  }
+]

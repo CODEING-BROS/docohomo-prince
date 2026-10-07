@@ -1,0 +1,16 @@
+{
+  "title": "Lifting facial mask",
+  "subTitle": "Revitalizing Tan-Removal Mask",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  "image": "/assets/images/slider/SliderFive/1.png",
+  "btn": {
+    "content": "More info",
+    "color": "dark"
+  },
+  "animationClass": {
+    "title": "slider-one-title",
+    "description": "slider-one-description",
+    "subtitle": "slider-one-subtitle",
+    "button": "slider-one-button"
+  }
+}

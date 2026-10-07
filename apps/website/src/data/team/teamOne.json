@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "image": "/assets/images/team/teamOne/1.png",
+    "name": "Danielle Welling",
+    "position": "Nail master",
+    "quote": "Ipsum dolor amet, consectetur adipiscing sedo lacus facilisis."
+  },
+  {
+    "id": 2,
+    "image": "/assets/images/team/teamOne/2.png",
+    "name": "Cali Lees",
+    "position": "Administrator",
+    "quote": "Ipsum dolor amet, consectetur adipiscing sedo lacus facilisis."
+  },
+  {
+    "id": 3,
+    "image": "/assets/images/team/teamOne/3.png",
+    "name": "Danielle Welling",
+    "position": "Hair stylish",
+    "quote": "Ipsum dolor amet, consectetur adipiscing sedo lacus facilisis."
+  }
+]

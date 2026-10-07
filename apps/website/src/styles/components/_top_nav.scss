@@ -1,0 +1,94 @@
+.top-nav {
+ // background-color: #04888D;
+ //background-color: green;
+ background-color: #005B3C;
+  padding: emCal(16, 12) 0;
+  @include mq(xl) {
+    font-size: 15px;
+  }
+  @include mq(lg) {
+    display: none;
+  }
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &__promo {
+      @include typo($color: #fff, $fsz: emCal(16, 13));
+    }
+    &__selectors {
+      display: flex;
+      align-items: center;
+      select {
+        @include typo($fsz: emCal(16, 13));
+        margin-right: emCal(13, 30);
+      }
+      .top-nav__auth {
+        @include link(
+          $color: #fff,
+          $hvr-color: setShadeColor(light),
+          $fsz: emCal(16, 13)
+        );
+      }
+    }
+  }
+  &.-style-2 {
+    .top-nav__wrapper {
+      &__promo {
+        @include mq(lg) {
+          display: none;
+        }
+      }
+      &__quick-links {
+        ul {
+          li {
+            display: inline-block;
+            a {
+              @include link(
+                $fsz: emCal(16, 13),
+                $color: #fff,
+                $hvr-color: setShadeColor(light)
+              );
+            }
+            &::after {
+              content: "|";
+              margin: 0 emCal(13, 10);
+              color: #fff;
+            }
+            &:last-child {
+              &::after {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.userHover{
+  position: relative;
+}
+.userHover:hover{
+  cursor: pointer;
+}
+.userHover img{
+  vertical-align: middle;
+}
+.userOptions {
+  position: absolute;
+  width: max-content;
+  background-color: #fff;
+  padding: 0 14px;
+  right: 0;
+  display: none;
+  transition: ease-in;
+  z-index: 10;
+  border-radius: 8px;
+  box-shadow: 0px 3px 15px 0px rgba(17, 31, 98, 0.1);
+  transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+}
+.userHover:hover .userOptions{
+  display: block;
+}

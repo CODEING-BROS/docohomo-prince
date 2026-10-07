@@ -1,0 +1,11 @@
+[
+  {
+    "title": "Home",
+    "to": "/"
+  },
+  { "title": "Products", "to": "/products" },
+  { "title": "About", "to": "/about" },
+  { "title": "Doctors", "to": "/doctors" },
+  { "title": "Contact", "to": "/contact" }
+
+]

@@ -1,0 +1,19 @@
+{
+  "accountLinks": [
+    { "name": "My account", "to": "#" }
+  ],
+  "informationLinks": [
+    { "name": "About us", "to": "/about" },
+    { "name": "Contact us", "to": "/contact" },
+    { "name": "Return & Cancellation", "to": "/ReturnCancellation" },
+    { "name": "Terms & Condition", "to": "/form.pdf" },
+    { "name" : "Shipping Policy", "to" : "/shipping"},
+    { "name" : "Refund Policy", "to" : "/refundPolicy"},
+    { "name" : "Privacy Policy", "to" : "/PrivacyPolicy"}
+  ],
+  "creditLinks": [
+    { "name": "Return & Cancellation", "to": "/ReturnCancellation" },
+    { "name": "Terms & Condition", "to": "/form.pdf" }
+  
+  ]
+}

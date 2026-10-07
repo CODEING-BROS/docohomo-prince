@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "image": "/assets/test/vinod.jpeg",
+    "name": "Vinod Mishra",
+    "city": "New York",
+    "review": "Dochomoeo has simplified my homeopathic shopping. Their discounts and offers make it affordable to maintain my wellness routine. I'm a satisfied and loyal customer.",
+    "rate": 4
+  },
+  {
+    "id": 2,
+    "image": "/assets/test/priya.jpeg",
+    "name": "Abhinav Mehta",
+    "city": "Michigan",
+    "review": "The selection of homeopathic products on Dochomoeo is impressive. I always find what I need. And Delivery is Always on time.",
+    "rate": 4
+  },
+  {
+    "id": 3,
+    "image": "/assets/test/fatima.jpeg",
+    "name": "Fatima Shaikh",
+    "city": "Sydney",
+    "review": "Fast and reliable – that's Dochomoeo's delivery for you! I received my order in perfect condition, and I'm one happy customer.",
+    "rate": 4
+  },
+  {
+    "id": 4,
+    "image": "/assets/test/krishna.jpeg",
+    "name": "Krishna Patel",
+    "city": "Ha Noi",
+    "review": "I'm so pleased with Dochomoeo's delivery speed and professionalism. They made my shopping experience hassle-free, and I'm a happy customer.",
+    "rate": 4
+  },
+  {
+    "id": 5,
+    "image": "/assets/test/jay.jpeg",
+    "name": "Jay Prakash",
+    "city": "Tokyo",
+    "review": "I've been using Dochomoeo for a while now, and I'm extremely pleased with the quality of their homeopathic remedies. Their website is easy to navigate, and the customer service is top-notch. The convenience of online doctor consultations is unparalleled. The doctors here are knowledgeable and caring. Highly recommended!",
+    "rate": 4
+  },
+  {
+    "id": 6,
+    "image": "/assets/test/abhinav.jpeg",
+    "name": "Priya Mishra",
+    "city": "Berlin",
+    "review": "Dochomoeo has made healthcare accessible like never before. I had a medical issue that needed attention, and I got a quick and accurate diagnosis from a Doctor on the platform. Thank you for providing this service!",
+    "rate": 4
+  },
+  {
+    "id": 7,
+    "image": "/assets/test/rakesh.jpeg",
+    "name": "Rakesh Singh",
+    "city": "Denver",
+    "review": "Dochomoeo has made healthcare more accessible to people in remote areas. I can consult with a specialist without traveling long distances. It's a game-changer for rural healthcare.",
+    "rate": 4
+  },
+  {
+    "id": 8,
+    "image": "/assets/test/md.jpeg",
+    "name": "Md Zaqui",
+    "city": "Paris",
+    "review": "I'm always on the lookout for discounts, and Dochomoeo consistently delivers. Their special offers have allowed me to try new homeopathic remedies without breaking the bank. Highly recommended.",
+    "rate": 4
+  }
+]

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /user/
+Disallow: /webhooks/
+
+Sitemap: https://dochomoeo.com/sitemap.xml

@@ -1,0 +1,172 @@
+.order_card {
+  width: 100% !important;
+}
+
+.productname {
+  line-height: 2;
+}
+
+.tablebody {
+  margin-top: 14px !important;
+  width: 100% !important;
+  // display: flex!important;
+  // flex-direction: column!important;
+}
+
+.productname {
+  text-transform: capitalize;
+  @media only screen and (max-width: 574px) {
+    text-align: start !important;
+  }
+}
+.orderid_bold {
+  font-weight: 600;
+}
+
+.button_link {
+  background-color: #222;
+  padding: 15px 25px 12px;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  text-decoration: none;
+}
+
+.ordertags {
+  @media only screen and (max-width: 574px) {
+    font-size: 12px !important;
+    margin-top: 0px !important;
+    line-height: 1px !important;
+  }
+}
+
+.addressinfo {
+  @media only screen and (max-width: 574px) {
+    margin-top: 8px !important;
+    line-height: 1.6 !important;
+  }
+}
+
+.addressMobile {
+  @media only screen and (max-width: 574px) {
+    margin-top: 14px !important;
+  }
+}
+
+.textlabel {
+  font-size: 12px !important;
+  @media only screen and (min-width: 574px) {
+    margin-top: 16px !important;
+  }
+}
+
+.textlabel {
+    font-size: 16px !important;
+    margin-top: 16px !important;
+  }
+.ratingheader{
+  margin-bottom: 10px!important;
+}
+.ratingarrange{
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.ratingnum{
+  
+  display: flex;
+  align-items: center;
+}
+.ratingcard {
+  border: solid 1px #d8e2e7;
+  width: 100%;
+  padding: 20px;
+  margin: 15px 0px;
+  @media only screen and (max-width:375px){
+    width: 100%;
+  }
+
+}
+.left_right {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.username {
+  margin: 1px 1px 8px 0px;
+  text-transform: capitalize;
+}
+.rightside {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  justify-content: center;
+}
+
+.nameanddate {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 8px 0px 0px 15px;
+}
+
+.userdate {
+  color: #7d7d7d;
+  font-size: 80%;
+}
+
+.dateandstart {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top:6px;
+}
+
+.centerline {
+  margin-top: 10px;
+  border: solid 1px #363b3d0a;
+  width: 100%;
+  text-align: center;
+}
+
+.detailsreview {
+  color: #7d7d7d;
+  font-size: 16px;
+  line-height: 1.4;
+  margin-top: 10px;
+}
+
+.leftright_start {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.allcard_rating {
+  display: flex;
+  flex-direction: row;
+}
+.allcardflex{
+
+}
+@media only screen and (max-width: 574px) {
+  .ordertags {
+    font-size: 12px !important;
+    margin-top: 0px !important;
+    line-height: 1px !important;
+  }
+  .addressinfo {
+    margin-top: 8px !important;
+    line-height: 1.6 !important;
+  }
+
+  .addressMobile {
+    margin-top: 14px !important;
+  }
+  .textlabel {
+    font-size: 12px !important;
+    margin-top: 16px !important;
+  }
+  
+}

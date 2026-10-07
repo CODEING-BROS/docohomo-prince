@@ -1,0 +1,33 @@
+# secrets and local settings: never in the repository
+.env
+.env.*
+!.env.example
+
+# installed packages and build output
+node_modules/
+.next/
+.next-dev/
+.next-new/
+*.tsbuildinfo
+
+# uploaded pictures and private medical files live on the server, not in git
+backend/uploads/
+backend/private/
+
+# made by "npx prisma generate"
+backend/src/generated/
+
+# assistant and editor files
+CLAUDE.md
+AGENTS.md
+.claude/
+.cursor/
+.vscode/
+.idea/
+
+# scratch files
+_*.cjs
+_*.ts
+*.log
+.DS_Store
+Thumbs.db

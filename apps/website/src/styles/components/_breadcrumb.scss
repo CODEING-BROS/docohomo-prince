@@ -1,0 +1,42 @@
+.breadcrumb {
+  text-align: center;
+  background: {
+    image: url("/assets/images/common/Breadcrumb/bg.png");
+    size: cover;
+    repeat: no-repeat;
+  }
+  padding: emCal(16, 50) 0;
+  margin-bottom: remCal(20);
+  h2 {
+    @include typo($fsz: emCal(16, 50), $fw: 700);
+    margin-bottom: emCal(50, 20);
+  }
+  ul {
+    list-style: none;
+    @media only screen and (max-width: 576px) {
+    line-height: 2rem;
+  }
+    li {
+      display: inline-block;
+      &.active {
+        color: setColor(red);
+      }
+      &:last-child {
+        &:after {
+          display: none;
+        }
+      }
+      &:after {
+        content: "/";
+        margin: 0 emCal(16, 10);
+      }
+    }
+  }
+}
+
+
+@media only screen and (max-width: 425px){
+  .breadcrumb{margin-bottom: 40px;}
+  .breadcrumb h2{font-size: 28px;}
+  .breadcrumb ul{line-height: 1.7;}
+}

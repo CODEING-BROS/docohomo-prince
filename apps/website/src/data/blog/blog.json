@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "title": "Beauty Tips For Women Who Don’t Like Wearing Makeup",
+    "description": "It is a long established fact that a reader will be distracted by the readable content of",
+    "author": "Lindsay Weinberg",
+    "category": "Beauty tips",
+    "tags": ["tricks", "make up"],
+    "publicDate": "2015-03-25",
+    "thumbImage": "/assets/images/blog/1.png",
+    "coverImage": "/assets/images/blog/1_1.png",
+    "slug": "beauty-tips-for-women-who-don’t-like-wearing-makeup-1"
+  },
+  {
+    "id": 2,
+    "title": "The 8 Best Clay Masks For Acne Prone Skin",
+    "description": "There are many variations of passages of Lorem Ipsum available, but the majority have",
+    "author": "Evelyn Tucker",
+    "category": "Make up",
+    "tags": ["tricks", "make up"],
+    "publicDate": "2015-03-21",
+    "thumbImage": "/assets/images/blog/2.png",
+    "coverImage": "/assets/images/blog/2_1.png",
+    "slug": "the-8-best-clay-masks-for-acne-prone-skin-2"
+  },
+  {
+    "id": 3,
+    "title": "Well-ageing: Why is the skin matrisome important?",
+    "description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece",
+    "author": "Jackson Hunter",
+    "category": "Skin care",
+    "tags": ["tricks", "make up"],
+    "publicDate": "2015-03-22",
+    "thumbImage": "/assets/images/blog/3.png",
+    "coverImage": "/assets/images/blog/3_1.png",
+    "slug": "well-ageing-why-is-the-skin-matrisome-important-3"
+  },
+  {
+    "id": 4,
+    "title": "6 Clay Masks That Combat Oily, Acne-Prone Skin",
+    "description": "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently",
+    "author": "Lou Taylor",
+    "category": "Body care",
+    "tags": ["tricks", "make up"],
+    "publicDate": "2015-03-23",
+    "thumbImage": "/assets/images/blog/4.png",
+    "coverImage": "/assets/images/blog/4_1.png",
+    "slug": "6-clay-masks-that-combat-oily-acne-prone-skin-4"
+  },
+  {
+    "id": 5,
+    "title": "The Bold & Beautiful Issue",
+    "description": "In partnership with recycling specialist Werner & Mertz, the two companies aim to reduce uncertainty in the cosmetics",
+    "author": "Lou Taylor",
+    "category": "Videos",
+    "tags": ["tricks", "make up"],
+    "publicDate": "2015-03-23",
+    "thumbImage": "/assets/images/blog/5.png",
+    "coverImage": "/assets/images/blog/5_1.png",
+    "slug": "the-bold-&-beautiful-issue-5"
+  },
+  {
+    "id": 6,
+    "title": "This African make-up brand issues casting call for 100 British women",
+    "description": "Zaron Cosmetics is said to be the fastest growing colour cosmetics company in the continent and has its eyes on the UK",
+    "author": "Lou Taylor",
+    "category": "Beauty tips",
+    "tags": ["tricks", "make up"],
+    "publicDate": "2015-03-23",
+    "thumbImage": "/assets/images/blog/6.png",
+    "coverImage": "/assets/images/blog/6_1.png",
+    "slug": "this-african-make-up-brand-issues-casting-call-for-100-british-women-6"
+  },
+  {
+    "id": 7,
+    "title": "Coty appoints Princess Anna of Bavaria as new Chief of Corporate Affairs",
+    "description": "Journalist and author Anna von Bayern will take on the role as part of newly-appointed CEO Sue Y Nabi’s leadership",
+    "author": "Lou Taylor",
+    "category": "Make up",
+    "tags": ["tricks", "make up"],
+    "publicDate": "2015-03-23",
+    "thumbImage": "/assets/images/blog/7.png",
+    "coverImage": "/assets/images/blog/7_1.png",
+    "slug": "coty-appoints-princess-anna-of-bavaria-as-new-chief-of-corporate-affairs-7"
+  },
+  {
+    "id": 8,
+    "title": "How Covid-19 is forcing the beauty box industry to innovate",
+    "description": "Journalist and author Anna von Bayern will take on the role as part of newly-appointed CEO Sue Y Nabi’s leadership",
+    "author": "Lou Taylor",
+    "category": "Skin care",
+    "tags": ["tricks", "make up"],
+    "publicDate": "2015-03-23",
+    "thumbImage": "/assets/images/blog/8.png",
+    "coverImage": "/assets/images/blog/8_1.png",
+    "slug": "how-covid-19-is-forcing-the-beauty-box-industry-to-innovate-8"
+  }
+]

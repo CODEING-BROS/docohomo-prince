@@ -1,0 +1,31 @@
+{
+  "name": "dochomoeo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DocHomoeo: API, storefront website and admin dashboard in one place",
+  "scripts": {
+    "install:all": "npm install && npm --prefix apps/api install && npm --prefix apps/website install && npm --prefix apps/dashboard install --legacy-peer-deps",
+    "build": "npm --prefix apps/website run build && npm --prefix apps/dashboard run build",
+    "start": "concurrently -k -n api,website,gateway -c blue,green,cyan \"npm:dev:api\" \"npm:start:website\" \"npm:start:gateway\"",
+    "start:website": "npm --prefix apps/website run start:local",
+    "start:gateway": "node gateway/server.js --static",
+    "dev": "concurrently -k -n api,website,dashboard,gateway -c blue,green,magenta,cyan \"npm:dev:api\" \"npm:dev:website\" \"npm:dev:dashboard\" \"npm:dev:gateway\"",
+    "dev:api": "cross-env PORT=5000 npm --prefix apps/api start",
+    "dev:website": "npm --prefix apps/website run dev",
+    "dev:dashboard": "cross-env PORT=3001 npm --prefix apps/dashboard start",
+    "dev:gateway": "node gateway/server.js",
+    "seed": "node apps/api/scripts/seed-local.js",
+    "db:up": "docker compose -f db/docker-compose.yml --env-file db/.env up -d --wait",
+    "db:down": "docker compose -f db/docker-compose.yml --env-file db/.env down",
+    "db:pull": "node db/pull-production.js",
+    "db:load": "node db/load-postgres.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "cross-env": "^10.1.0",
+    "dotenv": "^18.0.5",
+    "http-proxy": "^1.18.1",
+    "mongodb": "^7.7.0",
+    "pg": "^8.23.1"
+  }
+}

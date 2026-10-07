@@ -1,0 +1,44 @@
+[
+  {
+    "title": { "main": "Inner beauty out" },
+    "subTitle": "bringing you",
+    "image": "https://www.homeonherbs.com/image/cache/catalog/BANNER/website_banner_1-960x450.jpg.webp",
+    "btn": {
+      "content": "Appointment",
+      "color": "red"
+    },
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  },
+  {
+    "title": { "main": "You feel good" },
+    "subTitle": "When you look good",
+    "image": "https://www.homeonherbs.com/image/cache/catalog/BANNER/O-2-b-960x450.jpg.webp",
+    "btn": {
+      "content": "Appointment",
+      "color": "red"
+    },
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  },
+  {
+    "title": { "main": "Beauty salon" },
+    "subTitle": "We make best makeup",
+    "image": "https://www.homeonherbs.com/image/cache/catalog/BANNER/84636336-9425-422e-bbad-0c3d14e01bc4-960x450.jpg.webp",
+    "btn": {
+      "content": "Appointment",
+      "color": "red"
+    },
+    "animationClass": {
+      "title": "slider-one-title",
+      "subtitle": "slider-one-subtitle",
+      "button": "slider-one-button"
+    }
+  }
+]

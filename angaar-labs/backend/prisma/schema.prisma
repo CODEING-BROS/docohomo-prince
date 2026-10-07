@@ -1,0 +1,1582 @@
+// DocHomoeo data model (PostgreSQL).
+// Sections: People · Doctors · B2B · Catalog · Inventory · Pricing · Orders · Consultations · Content · System
+// `legacyId` holds the id from the old MongoDB system so imported rows can be traced back.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────────────────────── People
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  STAFF
+  CUSTOMER // shops on the storefront; is also the "patient" in consultations
+  DOCTOR
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+/// Everyone who can sign in: staff, customers/patients and doctors.
+model User {
+  id              Int       @id @default(autoincrement())
+  role            UserRole  @default(CUSTOMER)
+  firstName       String?
+  lastName        String?
+  email           String? // unique for staff (checked in code); customers may share one
+  phone           String?   @unique
+  passwordHash    String?
+  gender          Gender?
+  dateOfBirth     DateTime? @db.Date
+  avatarUrl       String?
+  isActive        Boolean   @default(true)
+  phoneVerifiedAt DateTime?
+  emailVerifiedAt DateTime?
+  lastLoginAt     DateTime?
+  rewardPoints    Int       @default(0)
+  legacyId        String?   @unique
+  staffRoleId     Int? // for staff: what they may see and change in the admin panel
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  staffRole      StaffRole?      @relation(fields: [staffRoleId], references: [id], onDelete: SetNull)
+  addresses      Address[]
+  doctorProfile  DoctorProfile?
+  b2bAccount     B2BAccount?
+  orders         Order[]
+  cart           Cart?
+  wishlist       WishlistItem[]
+  reviews        ProductReview[]
+  appointments   Appointment[]   @relation("PatientAppointments")
+  doctorReviews  DoctorReview[]
+  notifications  Notification[]
+  prescriptions  Prescription[]  @relation("PatientPrescriptions")
+  payments       Payment[]
+  couponUses     CouponRedemption[]
+  auditLogs      AuditLog[]
+  importJobs     BulkImportJob[]
+
+  @@index([role])
+  @@index([email])
+  @@index([createdAt])
+}
+
+/// A staff role: for each area of the admin panel, whether its holders can see it and change it.
+model StaffRole {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  permissions String[] // "orders.view", "orders.manage", …
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users User[]
+}
+
+model Address {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  label     String? // Home, Clinic, Shop…
+  fullName  String?
+  phone     String?
+  line1     String
+  line2     String?
+  landmark  String?
+  city      String?
+  state     String?
+  pincode   String?
+  country   String   @default("India")
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// One-time codes for phone login.
+model OtpCode {
+  id         Int       @id @default(autoincrement())
+  phone      String
+  codeHash   String
+  purpose    String    @default("LOGIN")
+  attempts   Int       @default(0)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([phone, purpose])
+}
+
+// ─────────────────────────────────────────────────────────── Doctors
+
+enum VerificationStatus {
+  DRAFT // registration started, documents not submitted yet
+  PENDING // submitted, waiting for review
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum ConsultationMode {
+  VIDEO
+  AUDIO
+  CHAT
+  IN_CLINIC
+}
+
+/// A doctor's registration, verification and consultation settings.
+model DoctorProfile {
+  id                     Int                @id @default(autoincrement())
+  userId                 Int                @unique
+  slug                   String             @unique
+  displayName            String
+  photoUrl               String?
+  stream                 String? // Homeopathy, Ayurveda…
+  qualification          String? // e.g. BHMS, MD (Hom)
+  specialization         String? // the name of the chosen specialization, kept for display and search
+  specializationId       Int? // which of the stream's specializations the doctor chose
+  experienceYears        Decimal?           @db.Decimal(4, 1)
+  languages              String[]
+  bio                    String?
+  // registration details checked during verification
+  registrationNumber     String?
+  registrationCouncil    String? // state council / CCH / NCH
+  registrationYear       Int?
+  clinicName             String?
+  clinicAddress          String?
+  clinicCity             String?
+  clinicState            String?
+  clinicPincode          String?
+  verificationStatus     VerificationStatus @default(DRAFT)
+  submittedAt            DateTime?
+  verifiedAt             DateTime?
+  verifiedById           Int?
+  rejectionReason        String?
+  // consultation settings
+  acceptsConsultations   Boolean            @default(false)
+  videoFee               Decimal?           @db.Decimal(10, 2)
+  audioFee               Decimal?           @db.Decimal(10, 2)
+  chatFee                Decimal?           @db.Decimal(10, 2)
+  inClinicFee            Decimal?           @db.Decimal(10, 2)
+  slotMinutes            Int                @default(15)
+  commissionPercent      Decimal            @default(20) @db.Decimal(5, 2) // platform share of each consultation fee
+  ratingAverage          Decimal            @default(0) @db.Decimal(3, 2)
+  ratingCount            Int                @default(0)
+  isListed               Boolean            @default(true) // shown on the public doctors page
+  // payout account for consultation earnings
+  bankAccountName        String?
+  bankAccountNumber      String?
+  bankIfsc               String?
+  // onboarding: after the documents are verified the doctor answers test questions for their stream
+  testPassedAt           DateTime?
+  tierId                 Int? // Bronze / Silver / Gold: how many patients a day, and the payment share
+  legacyId               String?            @unique
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+
+  specializationRef StreamSpecialization? @relation(fields: [specializationId], references: [id], onDelete: SetNull)
+
+  user          User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  documents     VerificationDocument[]
+  availability  DoctorAvailability[]
+  timeOff       DoctorTimeOff[]
+  appointments  Appointment[]
+  prescriptions Prescription[]
+  payouts       DoctorPayout[]
+  tier          DoctorTier?                  @relation(fields: [tierId], references: [id], onDelete: SetNull)
+  testAttempts  DoctorTestAttempt[]
+  reviews       DoctorReview[]
+
+  @@index([verificationStatus])
+  @@index([tierId])
+}
+
+enum DocumentType {
+  DEGREE_CERTIFICATE
+  REGISTRATION_CERTIFICATE
+  GOVERNMENT_ID
+  CLINIC_PROOF
+  GST_CERTIFICATE
+  DRUG_LICENSE
+  SHOP_LICENSE
+  PHOTO
+  OTHER
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+/// Uploaded proof for a doctor registration or a B2B account.
+model VerificationDocument {
+  id              Int            @id @default(autoincrement())
+  doctorProfileId Int?
+  b2bAccountId    Int?
+  type            DocumentType
+  fileUrl         String
+  fileName        String?
+  documentNumber  String?
+  status          DocumentStatus @default(PENDING)
+  remarks         String?
+  reviewedById    Int?
+  reviewedAt      DateTime?
+  createdAt       DateTime       @default(now())
+
+  doctorProfile DoctorProfile? @relation(fields: [doctorProfileId], references: [id], onDelete: Cascade)
+  b2bAccount    B2BAccount?    @relation(fields: [b2bAccountId], references: [id], onDelete: Cascade)
+
+  @@index([doctorProfileId])
+  @@index([b2bAccountId])
+}
+
+/// Weekly working hours; bookable slots are generated from these.
+model DoctorAvailability {
+  id        Int              @id @default(autoincrement())
+  doctorId  Int
+  dayOfWeek Int // 0 = Sunday … 6 = Saturday
+  startTime String // "10:00"
+  endTime   String // "13:30"
+  mode      ConsultationMode @default(VIDEO)
+  isActive  Boolean          @default(true)
+
+  doctor DoctorProfile @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@index([doctorId, dayOfWeek])
+}
+
+/// Dates or hours a doctor is not available.
+model DoctorTimeOff {
+  id        Int      @id @default(autoincrement())
+  doctorId  Int
+  startsAt  DateTime
+  endsAt    DateTime
+  reason    String?
+  createdAt DateTime @default(now())
+
+  doctor DoctorProfile @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@index([doctorId, startsAt])
+}
+
+// ─────────────────────────────────────────────────────────── B2B (doctors & wholesale buyers)
+
+enum B2BAccountType {
+  DOCTOR
+  CLINIC
+  RETAILER // pharmacy / medical store
+  WHOLESALER
+  DISTRIBUTOR
+}
+
+/// A wholesale (B2B) buyer: a doctor who registered to buy for their practice at trade prices.
+/// Separate from DoctorProfile (doctors listed for consultations). The doctor applies with their
+/// registration details and documents, and an admin approves the account.
+/// Its price tier and discount rules decide B2B prices.
+model B2BAccount {
+  id                 Int                @id @default(autoincrement())
+  userId             Int                @unique
+  type               B2BAccountType
+  businessName       String // clinic or practice name
+  registrationNumber  String? // medical council registration
+  registrationCouncil String?
+  qualification       String?
+  gstNumber          String?
+  drugLicenseNumber  String?
+  panNumber          String?
+  contactName        String?
+  contactPhone       String?
+  contactEmail       String?
+  addressLine        String?
+  city               String?
+  state              String?
+  pincode            String?
+  status             VerificationStatus @default(PENDING)
+  approvedAt         DateTime?
+  approvedById       Int?
+  rejectionReason    String?
+  priceTierId        Int?
+  creditLimit        Decimal            @default(0) @db.Decimal(12, 2)
+  creditDays         Int                @default(0)
+  notes              String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  user          User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  priceTier     PriceTier?             @relation(fields: [priceTierId], references: [id], onDelete: SetNull)
+  documents     VerificationDocument[]
+  discountRules B2BDiscountRule[]
+  orders        Order[]
+
+  @@index([status])
+  @@index([priceTierId])
+}
+
+/// A group of B2B buyers that share pricing, e.g. "Doctor", "Retailer", "Distributor".
+model PriceTier {
+  id                     Int      @id @default(autoincrement())
+  name                   String   @unique
+  description            String?
+  defaultDiscountPercent Decimal  @default(0) @db.Decimal(5, 2) // off selling price when no rule matches
+  isActive               Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  accounts      B2BAccount[]
+  discountRules B2BDiscountRule[]
+}
+
+enum DiscountScope {
+  ALL
+  BRAND
+  CATEGORY
+  PRODUCT
+  VARIANT
+}
+
+enum DiscountType {
+  PERCENT
+  FLAT // amount off per unit
+  FIXED_PRICE // the unit price itself
+}
+
+/// One B2B pricing rule. Covers tier-wide discounts, a single doctor's special price,
+/// brand/category/product-wise discounts, and quantity or order-value slabs.
+model B2BDiscountRule {
+  id            Int           @id @default(autoincrement())
+  name          String
+  priceTierId   Int? // applies to everyone in this tier …
+  b2bAccountId  Int? // … or to one account only (takes precedence)
+  scope         DiscountScope @default(ALL)
+  brandId       Int?
+  categoryId    Int?
+  productId     Int?
+  variantId     Int?
+  discountType  DiscountType  @default(PERCENT)
+  value         Decimal       @db.Decimal(12, 2)
+  minQuantity   Int           @default(1) // quantity slab
+  minOrderValue Decimal?      @db.Decimal(12, 2) // order-value slab
+  priority      Int           @default(0) // higher wins when several rules match
+  startsAt      DateTime?
+  endsAt        DateTime?
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  priceTier  PriceTier?      @relation(fields: [priceTierId], references: [id], onDelete: Cascade)
+  b2bAccount B2BAccount?     @relation(fields: [b2bAccountId], references: [id], onDelete: Cascade)
+  brand      Brand?          @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  category   Category?       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  product    Product?        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variant    ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@index([priceTierId])
+  @@index([b2bAccountId])
+  @@index([scope])
+}
+
+// ─────────────────────────────────────────────────────────── Catalog
+
+model Category {
+  id             Int      @id @default(autoincrement())
+  parentId       Int?
+  name           String
+  slug           String   @unique
+  description    String?
+  imageUrl       String?
+  sortOrder      Int      @default(0)
+  isActive       Boolean  @default(true)
+  seoTitle       String?
+  seoDescription String?
+  legacyId       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  parent        Category?         @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children      Category[]        @relation("CategoryTree")
+  products      Product[]
+  discountRules B2BDiscountRule[]
+
+  @@index([parentId])
+}
+
+model Brand {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  slug        String   @unique
+  logoUrl     String?
+  description String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  legacyId    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products      Product[]
+  discountRules B2BDiscountRule[]
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+/// The thing shown on a product page. What is actually bought is one of its variants.
+model Product {
+  id                   Int           @id @default(autoincrement())
+  name                 String
+  slug                 String        @unique
+  brandId              Int?
+  categoryId           Int?
+  form                 String? // Dilution, Mother Tincture, Biochemic, Tablets, Drops, Ointment…
+  shortDescription     String?
+  description          String?
+  composition          String?
+  indications          String?
+  directions           String?
+  safetyInfo           String?
+  manufacturer         String?
+  countryOfOrigin      String?
+  hsnCode              String?
+  gstPercent           Decimal       @default(0) @db.Decimal(5, 2)
+  requiresPrescription Boolean       @default(false)
+  status               ProductStatus @default(ACTIVE)
+  isFeatured           Boolean       @default(false)
+  isNewArrival         Boolean       @default(false)
+  isTrending           Boolean       @default(false)
+  tags                 String[]
+  seoTitle             String?
+  seoDescription       String?
+  ratingAverage        Decimal       @default(0) @db.Decimal(3, 2)
+  ratingCount          Int           @default(0)
+  legacyId             String?       @unique
+  legacyCode           String? // old "product_id", e.g. prod_00467
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  brand             Brand?             @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  category          Category?          @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  variants          ProductVariant[]
+  images            ProductImage[]
+  reviews           ProductReview[]
+  wishlistedBy      WishlistItem[]
+  discountRules     B2BDiscountRule[]
+  orderItems        OrderItem[]
+  conditions        Condition[]
+  questions         ProductQuestion[]
+
+  @@index([brandId])
+  @@index([categoryId])
+  @@index([status])
+  @@index([name])
+}
+
+/// A sellable pack of a product: 30 ml, 100 ml, 30 CH in 30 ml… Each has its own SKU, prices and stock.
+model ProductVariant {
+  id                Int      @id @default(autoincrement())
+  productId         Int
+  sku               String   @unique
+  barcode           String?
+  title             String // shown to the buyer, e.g. "30 CH · 30 ml"
+  packSize          String? // "30 ml", "100 ml", "25 g"
+  potency           String? // "30 CH", "200 CH", "1M", "Q"
+  mrp               Decimal  @db.Decimal(12, 2)
+  sellingPrice      Decimal  @db.Decimal(12, 2) // D2C price
+  b2bPrice          Decimal? @db.Decimal(12, 2) // base wholesale price before tier discounts
+  costPrice         Decimal? @db.Decimal(12, 2)
+  stockQuantity     Int      @default(0) // on hand
+  reservedQuantity  Int      @default(0) // held by unshipped orders
+  lowStockThreshold Int      @default(5)
+  minOrderQuantity  Int      @default(1)
+  maxOrderQuantity  Int?
+  b2bMinQuantity    Int      @default(1) // wholesale MOQ
+  weightGrams       Int?
+  isDefault         Boolean  @default(false)
+  isActive          Boolean  @default(true)
+  sortOrder         Int      @default(0)
+  legacyId          String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  product            Product             @relation(fields: [productId], references: [id], onDelete: Cascade)
+  images             ProductImage[]
+  batches            StockBatch[]
+  movements          InventoryMovement[]
+  cartItems          CartItem[]
+  orderItems         OrderItem[]
+  prescriptionItems  PrescriptionItem[]
+  discountRules      B2BDiscountRule[]
+
+  @@index([productId])
+  @@index([stockQuantity])
+}
+
+model ProductImage {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  variantId Int? // set when the image belongs to one pack only
+  url       String
+  altText   String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  product Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  @@index([productId, sortOrder])
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model ProductReview {
+  id         Int          @id @default(autoincrement())
+  productId  Int
+  userId     Int?
+  authorName String?
+  rating     Int
+  title      String?
+  body       String?
+  status          ReviewStatus @default(PENDING)
+  isVerifiedBuyer Boolean      @default(false)
+  helpfulCount    Int          @default(0)
+  createdAt       DateTime     @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([productId, status])
+}
+
+/// A health condition a product is used for ("Treatment" filter on the storefront).
+model Condition {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  slug      String    @unique
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  products  Product[]
+}
+
+/// A shopper's question on a product page and the answer shown under it.
+model ProductQuestion {
+  id           Int          @id @default(autoincrement())
+  productId    Int
+  askedByName  String?
+  question     String
+  answer       String?
+  answeredBy   String? // name shown, e.g. the doctor who answered
+  status       ReviewStatus @default(PENDING)
+  createdAt    DateTime     @default(now())
+  answeredAt   DateTime?
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, status])
+}
+
+// ─────────────────────────────────────────────────────────── Inventory
+
+/// Stock received together, with its own batch number and expiry date.
+model StockBatch {
+  id          Int       @id @default(autoincrement())
+  variantId   Int
+  batchNumber String
+  mfgDate     DateTime? @db.Date
+  expiryDate  DateTime? @db.Date
+  quantity    Int // remaining in this batch
+  costPrice   Decimal?  @db.Decimal(12, 2)
+  createdAt   DateTime  @default(now())
+
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@index([variantId])
+  @@index([expiryDate])
+}
+
+enum StockMovementType {
+  OPENING
+  PURCHASE
+  SALE
+  RETURN
+  ADJUSTMENT
+  DAMAGE
+  EXPIRED
+}
+
+/// Every change to stock, so the quantity on a variant can always be explained.
+model InventoryMovement {
+  id            Int               @id @default(autoincrement())
+  variantId     Int
+  type          StockMovementType
+  quantity      Int // positive = stock in, negative = stock out
+  balanceAfter  Int
+  orderId       Int?
+  batchId       Int?
+  note          String?
+  createdById   Int?
+  createdAt     DateTime          @default(now())
+
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@index([variantId, createdAt])
+}
+
+// ─────────────────────────────────────────────────────────── Coupons & shipping
+
+enum SalesChannel {
+  D2C // retail customer
+  B2B // doctor / wholesale buyer
+}
+
+enum CouponType {
+  PERCENT
+  FLAT
+  FREE_SHIPPING
+}
+
+model Coupon {
+  id            Int           @id @default(autoincrement())
+  code          String        @unique
+  description   String?
+  type          CouponType    @default(PERCENT)
+  value         Decimal       @default(0) @db.Decimal(12, 2)
+  maxDiscount   Decimal?      @db.Decimal(12, 2)
+  minOrderValue Decimal?      @db.Decimal(12, 2)
+  channel       SalesChannel? // null = both
+  usageLimit    Int?
+  perUserLimit  Int?
+  usedCount     Int           @default(0)
+  startsAt      DateTime?
+  expiresAt     DateTime?
+  isActive      Boolean       @default(true)
+  legacyId      String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  redemptions CouponRedemption[]
+}
+
+model CouponRedemption {
+  id        Int      @id @default(autoincrement())
+  couponId  Int
+  userId    Int
+  orderId   Int?
+  createdAt DateTime @default(now())
+
+  coupon Coupon @relation(fields: [couponId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([couponId, userId])
+}
+
+/// Delivery charge by order value, per channel. The first matching active rule applies.
+model ShippingRule {
+  id            Int           @id @default(autoincrement())
+  name          String
+  channel       SalesChannel? // null = both
+  minOrderValue Decimal       @default(0) @db.Decimal(12, 2)
+  maxOrderValue Decimal?      @db.Decimal(12, 2)
+  charge        Decimal       @default(0) @db.Decimal(12, 2)
+  codAvailable  Boolean       @default(true)
+  codCharge     Decimal       @default(0) @db.Decimal(12, 2)
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+/// Where we deliver, how fast, and whether cash on delivery is offered.
+model PincodeServiceability {
+  pincode       String   @id
+  city          String?
+  state         String?
+  isServiceable Boolean  @default(true)
+  codAvailable  Boolean  @default(true)
+  deliveryDays  Int?
+  updatedAt     DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────────────────── Cart & wishlist
+
+model Cart {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  updatedAt DateTime @updatedAt
+
+  user  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items CartItem[]
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  cartId    Int
+  variantId Int
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+
+  cart    Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@unique([cartId, variantId])
+}
+
+model WishlistItem {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+// ─────────────────────────────────────────────────────────── Orders
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  PACKED
+  SHIPPED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+  UNDELIVERED // refused, not available, wrong address, lost in transit
+  RETURN_REQUESTED
+  RETURNED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  PARTIALLY_PAID
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  COD
+  ONLINE
+  CREDIT // B2B credit terms
+  BANK_TRANSFER
+}
+
+model Order {
+  id               Int           @id @default(autoincrement())
+  orderNumber      String        @unique
+  channel          SalesChannel  @default(D2C)
+  userId           Int?
+  b2bAccountId     Int?
+  prescriptionId   Int? // set when the order was placed from a prescription
+  status           OrderStatus   @default(PENDING)
+  paymentStatus    PaymentStatus @default(PENDING)
+  paymentMethod    PaymentMethod @default(COD)
+  // money
+  subtotal         Decimal       @default(0) @db.Decimal(12, 2) // sum of line totals before order-level discounts
+  discountTotal    Decimal       @default(0) @db.Decimal(12, 2)
+  couponCode       String?
+  couponDiscount   Decimal       @default(0) @db.Decimal(12, 2)
+  shippingCharge   Decimal       @default(0) @db.Decimal(12, 2)
+  codCharge        Decimal       @default(0) @db.Decimal(12, 2)
+  taxTotal         Decimal       @default(0) @db.Decimal(12, 2)
+  grandTotal       Decimal       @default(0) @db.Decimal(12, 2)
+  // customer and address as they were when the order was placed
+  customerName     String?
+  customerPhone    String?
+  customerEmail    String?
+  shippingAddress  String?
+  shippingCity     String?
+  shippingState    String?
+  shippingPincode  String?
+  billingName      String? // business name on a B2B invoice
+  billingGstNumber String?
+  customerNote     String?
+  adminNote        String?
+  placedAt         DateTime      @default(now())
+  confirmedAt      DateTime?
+  shippedAt        DateTime?
+  deliveredAt      DateTime?
+  cancelledAt      DateTime?
+  cancelReason     String?
+  estimatedDelivery DateTime?    @db.Date
+  invoiceNumber    String?       @unique // GST tax invoice, numbered in order within each financial year
+  invoicedAt       DateTime?
+  invoiceSeller    Json? // the seller details as they were when the invoice was made
+  legacyId         String?       @unique
+  legacyStatus     String? // status text from the old system
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  user         User?                @relation(fields: [userId], references: [id], onDelete: SetNull)
+  b2bAccount   B2BAccount?          @relation(fields: [b2bAccountId], references: [id], onDelete: SetNull)
+  prescription Prescription?        @relation(fields: [prescriptionId], references: [id], onDelete: SetNull)
+  items        OrderItem[]
+  history      OrderStatusHistory[]
+  payments     Payment[]
+  shipments    Shipment[]
+  returns      ReturnRequest[]
+
+  @@index([userId])
+  @@index([b2bAccountId])
+  @@index([channel, status])
+  @@index([status])
+  @@index([placedAt])
+}
+
+model OrderItem {
+  id           Int     @id @default(autoincrement())
+  orderId      Int
+  productId    Int?
+  variantId    Int?
+  // copied at purchase time so the order never changes when the catalog does
+  productName  String
+  variantTitle String?
+  sku          String?
+  brandName    String?
+  imageUrl     String?
+  quantity     Int
+  mrp          Decimal? @db.Decimal(12, 2)
+  unitPrice    Decimal  @db.Decimal(12, 2)
+  discount     Decimal  @default(0) @db.Decimal(12, 2)
+  gstPercent   Decimal  @default(0) @db.Decimal(5, 2)
+  lineTotal    Decimal  @db.Decimal(12, 2)
+
+  order       Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+  variant     ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  returnItems ReturnItem[]
+
+  @@index([orderId])
+  @@index([variantId])
+  @@index([productId])
+}
+
+model OrderStatusHistory {
+  id          Int         @id @default(autoincrement())
+  orderId     Int
+  status      OrderStatus
+  note        String?
+  changedById Int?
+  createdAt   DateTime    @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, createdAt])
+}
+
+enum PaymentTxnStatus {
+  CREATED
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+/// A payment attempt for an order or a consultation.
+model Payment {
+  id            Int              @id @default(autoincrement())
+  orderId       Int?
+  appointmentId Int?
+  userId        Int?
+  provider      String // PHONEPE, RAZORPAY, COD, MANUAL
+  method        String? // UPI, CARD, NETBANKING…
+  providerRef   String? // gateway transaction id
+  amount        Decimal          @db.Decimal(12, 2)
+  currency      String           @default("INR")
+  status        PaymentTxnStatus @default(CREATED)
+  refundedAmount Decimal         @default(0) @db.Decimal(12, 2)
+  rawResponse   Json?
+  paidAt        DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  order       Order?       @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  appointment Appointment? @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  user        User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  refunds     Refund[]
+
+  @@index([orderId])
+  @@index([appointmentId])
+  @@index([providerRef])
+}
+
+enum ShipmentStatus {
+  PENDING
+  PICKUP_SCHEDULED
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  RTO
+  LOST
+  CANCELLED
+}
+
+model Shipment {
+  id                Int            @id @default(autoincrement())
+  orderId           Int
+  carrier           String? // Shiprocket, Delhivery…
+  trackingNumber    String?
+  trackingUrl       String?
+  providerRef       String? // shipment id at the carrier
+  providerOrderId   String? // the order's own number at Shiprocket
+  labelUrl          String? // the printable shipping label
+  lastCheckedAt     DateTime? // when tracking was last asked for
+  problem           String? // why the last step with the courier did not work
+  status            ShipmentStatus @default(PENDING)
+  weightGrams       Int?
+  shippingCost      Decimal?       @db.Decimal(12, 2)
+  estimatedDelivery DateTime?      @db.Date
+  shippedAt         DateTime?
+  deliveredAt       DateTime?
+  trackingEvents    Json?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([trackingNumber])
+}
+
+enum ReturnStatus {
+  REQUESTED
+  APPROVED
+  REJECTED
+  PICKED_UP
+  RECEIVED
+  REFUNDED
+  CLOSED // received, and there was no money to give back
+  CANCELLED // called off after it was approved, before the parcel was collected
+}
+
+/// A customer's request to return all or part of an order.
+model ReturnRequest {
+  id           Int          @id @default(autoincrement())
+  returnNumber String       @unique
+  orderId      Int
+  reason       String // wrong item, damaged, near expiry…
+  description  String?
+  photoUrls    String[]
+  status       ReturnStatus @default(REQUESTED)
+  refundAmount Decimal?     @db.Decimal(12, 2)
+  adminNote    String? // shown to the customer: why it was rejected, or how to send it back
+  requestedById Int? // the customer who asked; empty when staff opened the return
+  createdById  Int? // the staff member who opened it
+  reviewedById Int?
+  reviewedAt   DateTime?
+  pickupCourier  String?
+  pickupTracking String?
+  // set when the pickup was booked through Shiprocket rather than typed in by staff
+  pickupOrderRef    String? // Shiprocket's number for the return order
+  pickupShipmentRef String?
+  pickupStatus      String? // the courier's own words, from the last tracking check
+  pickupProblem     String?
+  pickupCheckedAt   DateTime?
+  pickupArrivedAt   DateTime? // the courier says the parcel is back at the warehouse
+  pickedUpAt   DateTime?
+  receivedAt   DateTime?
+  refundMethod String? // GATEWAY, BANK (bank transfer or UPI by hand), CREDIT (taken off what they owe)
+  refundReference String?
+  refundId     Int? // the gateway refund, while it is on its way and after
+  refundedAt   DateTime?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  order Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  items ReturnItem[]
+
+  @@index([orderId])
+  @@index([status])
+}
+
+model ReturnItem {
+  id              Int @id @default(autoincrement())
+  returnRequestId Int
+  orderItemId     Int
+  quantity        Int
+  restocked       Int @default(0) // how many went back on the shelf when the parcel was opened
+
+  returnRequest ReturnRequest @relation(fields: [returnRequestId], references: [id], onDelete: Cascade)
+  orderItem     OrderItem     @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+
+  @@index([returnRequestId])
+}
+
+// ─────────────────────────────────────────────────────────── Consultations & prescriptions
+
+enum AppointmentStatus {
+  PENDING_PAYMENT
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+model Appointment {
+  id                Int               @id @default(autoincrement())
+  appointmentNumber String            @unique
+  doctorId          Int
+  patientId         Int // the user who booked
+  // who the consultation is for (may be a family member)
+  patientName       String
+  patientAge        Int?
+  patientGender     Gender?
+  patientPhone      String?
+  mode              ConsultationMode  @default(VIDEO)
+  scheduledAt       DateTime
+  durationMinutes   Int               @default(15)
+  status            AppointmentStatus @default(PENDING_PAYMENT)
+  fee               Decimal           @default(0) @db.Decimal(10, 2)
+  doctorEarning     Decimal           @default(0) @db.Decimal(10, 2) // fee minus platform commission
+  payoutId          Int? // set once this earning has been paid out
+  symptoms          String?
+  // what the patient told us while booking: who it is for, how long, how bad, conditions, medicines, language, city
+  intake            Json?
+  matchSessionId    Int? // the guided search this booking came from, for learning which suggestions work
+  meetingUrl        String?
+  doctorNotes       String?
+  cancelledBy       String? // PATIENT, DOCTOR, ADMIN
+  cancelReason      String?
+  completedAt       DateTime?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  doctor       DoctorProfile @relation(fields: [doctorId], references: [id], onDelete: Restrict)
+  patient      User          @relation("PatientAppointments", fields: [patientId], references: [id], onDelete: Restrict)
+  payments     Payment[]
+  prescription Prescription?
+  review       DoctorReview?
+  messages     ConsultationMessage[]
+  payout       DoctorPayout? @relation(fields: [payoutId], references: [id], onDelete: SetNull)
+  matchSession MatchSession? @relation(fields: [matchSessionId], references: [id], onDelete: SetNull)
+  files        ConsultationFile[]
+
+  @@index([doctorId, scheduledAt])
+  @@index([patientId])
+  @@index([status])
+}
+
+/// Chat between patient and doctor during a consultation, including shared reports and photos.
+model ConsultationMessage {
+  id            Int      @id @default(autoincrement())
+  appointmentId Int
+  senderId      Int
+  body          String?
+  attachmentUrl String?
+  createdAt     DateTime @default(now())
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+
+  @@index([appointmentId, createdAt])
+}
+
+enum PayoutStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+/// Money paid to a doctor for completed consultations in a period.
+model DoctorPayout {
+  id          Int          @id @default(autoincrement())
+  doctorId    Int
+  periodStart DateTime     @db.Date
+  periodEnd   DateTime     @db.Date
+  amount      Decimal      @db.Decimal(12, 2)
+  status      PayoutStatus @default(PENDING)
+  reference   String? // bank transfer reference
+  paidAt      DateTime?
+  createdAt   DateTime     @default(now())
+
+  doctor       DoctorProfile @relation(fields: [doctorId], references: [id], onDelete: Restrict)
+  appointments Appointment[]
+
+  @@index([doctorId, status])
+}
+
+enum PrescriptionStatus {
+  DRAFT
+  ISSUED
+}
+
+/// Written by the doctor after a consultation; the patient can order its medicines in one step.
+model Prescription {
+  id                 Int                @id @default(autoincrement())
+  prescriptionNumber String             @unique
+  appointmentId      Int?               @unique
+  doctorId           Int
+  patientId          Int
+  patientName        String
+  diagnosis          String?
+  advice             String?
+  followUpDate       DateTime?          @db.Date
+  status             PrescriptionStatus @default(DRAFT)
+  issuedAt           DateTime?
+  pdfUrl             String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  appointment Appointment?       @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  doctor      DoctorProfile      @relation(fields: [doctorId], references: [id], onDelete: Restrict)
+  patient     User               @relation("PatientPrescriptions", fields: [patientId], references: [id], onDelete: Restrict)
+  items       PrescriptionItem[]
+  orders      Order[]
+
+  @@index([doctorId])
+  @@index([patientId])
+}
+
+model PrescriptionItem {
+  id             Int     @id @default(autoincrement())
+  prescriptionId Int
+  variantId      Int? // linked to the catalog when the medicine is sold here
+  medicineName   String
+  potency        String?
+  dosage         String? // "5 drops"
+  frequency      String? // "3 times a day"
+  duration       String? // "15 days"
+  instructions   String?
+  quantity       Int     @default(1)
+
+  prescription Prescription    @relation(fields: [prescriptionId], references: [id], onDelete: Cascade)
+  variant      ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  @@index([prescriptionId])
+}
+
+// ─────────────────────────────────────────────────────────── Content
+
+enum BannerPlatform {
+  DESKTOP
+  MOBILE
+}
+
+model Banner {
+  id        Int            @id @default(autoincrement())
+  title     String?
+  imageUrl  String
+  linkUrl   String?
+  placement String         @default("HOME_HERO")
+  platform  BannerPlatform @default(DESKTOP)
+  sortOrder Int            @default(0)
+  isActive  Boolean        @default(true)
+  startsAt  DateTime?
+  endsAt    DateTime?
+  legacyId  String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model BlogCategory {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  slug      String     @unique
+  createdAt DateTime   @default(now())
+  posts     BlogPost[]
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model BlogPost {
+  id             Int           @id @default(autoincrement())
+  title          String
+  slug           String        @unique
+  categoryId     Int?
+  excerpt        String?
+  content        String? // HTML
+  coverImageUrl  String?
+  authorName     String?
+  authorBio      String?
+  authorImageUrl String?
+  status         PostStatus    @default(PUBLISHED)
+  publishedAt    DateTime?
+  seoTitle       String?
+  seoDescription String?
+  legacyId       String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  category BlogCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+}
+
+enum EnquiryType {
+  CONTACT
+  WHOLESALE
+  DOCTOR_CONSULTATION
+  ORDER
+}
+
+enum EnquiryStatus {
+  NEW
+  IN_PROGRESS
+  CLOSED
+}
+
+/// Messages from the contact, wholesale and doctor-consultation forms.
+model Enquiry {
+  id        Int           @id @default(autoincrement())
+  type      EnquiryType
+  name      String?
+  phone     String?
+  email     String?
+  message   String?
+  details   Json? // form-specific fields (product, quantity, doctor…)
+  status    EnquiryStatus @default(NEW)
+  legacyId  String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([type, status])
+}
+
+// ─────────────────────────────────────────────────────────── System
+
+/// Store-wide settings, one row per key.
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+/// Who changed what in the admin panel.
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  actorId   Int?
+  action    String // "product.update", "doctor.approve"
+  entity    String
+  entityId  String?
+  changes   Json?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+}
+
+enum ImportJobStatus {
+  QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+/// A bulk product upload/update (CSV or Excel) and its result.
+model BulkImportJob {
+  id          Int             @id @default(autoincrement())
+  kind        String // PRODUCTS, PRICES, STOCK
+  fileName    String
+  status      ImportJobStatus @default(QUEUED)
+  totalRows   Int             @default(0)
+  successRows Int             @default(0)
+  failedRows  Int             @default(0)
+  errors      Json?
+  createdById Int?
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  createdAt   DateTime        @default(now())
+
+  createdBy User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+}
+
+// ─────────────────────────────────────────────── doctor onboarding
+
+enum StreamStatus {
+  OPEN // taking new doctors and consultations
+  COMING_SOON // doctors can register; consultations start when it opens
+  CLOSED
+}
+
+/// A system of medicine a doctor consults in: Homeopathy, Ayurveda… Managed by staff.
+model ConsultingStream {
+  id               Int          @id @default(autoincrement())
+  name             String       @unique
+  description      String?
+  status           StreamStatus @default(OPEN)
+  questionsPerTest Int          @default(10) // how many questions a doctor is asked
+  passPercent      Int          @default(60) // correct answers needed to pass
+  sortOrder        Int          @default(0)
+  isActive         Boolean      @default(true)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  questions       StreamQuestion[]
+  attempts        DoctorTestAttempt[]
+  specializations StreamSpecialization[]
+}
+
+/// What a doctor can specialise in within a stream (skin and hair, child health…). Staff keep the list;
+/// a doctor picks one when registering and can change it from their profile.
+model StreamSpecialization {
+  id          Int      @id @default(autoincrement())
+  streamId    Int
+  name        String
+  description String?
+  symptoms    String[] @default([]) // what patients type or tap ("hair fall", "acne"): points the booking flow at this specialization
+  isGeneral   Boolean  @default(false) // the one to suggest when the symptoms point nowhere in particular
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  stream    ConsultingStream @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  questions StreamQuestion[]
+  doctors   DoctorProfile[]
+
+  @@unique([streamId, name])
+  @@index([streamId, isActive])
+}
+
+/// One multiple-choice test question for a stream.
+model StreamQuestion {
+  id               Int      @id @default(autoincrement())
+  streamId         Int
+  specializationId Int? // empty: asked of every doctor in the stream; set: only of doctors with this specialization
+  question         String
+  options      String[]
+  correctIndex Int // position of the right answer in options, from 0
+  explanation  String?
+  isActive     Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  stream         ConsultingStream      @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  specialization StreamSpecialization? @relation(fields: [specializationId], references: [id], onDelete: SetNull)
+
+  @@index([streamId, isActive])
+  @@index([specializationId])
+}
+
+/// One sitting of the test by a doctor.
+model DoctorTestAttempt {
+  id          Int       @id @default(autoincrement())
+  doctorId    Int
+  streamId    Int
+  questionIds Int[] // the questions that were asked, in order
+  answers     Json? // { questionId: chosen option }
+  score       Int       @default(0)
+  total       Int
+  passed      Boolean   @default(false)
+  startedAt   DateTime  @default(now())
+  submittedAt DateTime?
+
+  doctor DoctorProfile    @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  stream ConsultingStream @relation(fields: [streamId], references: [id], onDelete: Cascade)
+
+  @@index([doctorId, startedAt])
+}
+
+/// Bronze, Silver, Gold: how many patients a day a doctor takes and what share the platform keeps.
+model DoctorTier {
+  id                Int      @id @default(autoincrement())
+  name              String   @unique
+  description       String?
+  minPatientsPerDay Int      @default(0)
+  maxPatientsPerDay Int // no more bookings are taken for a day once this many are booked
+  commissionPercent Decimal  @default(20) @db.Decimal(5, 2) // platform share of each consultation fee
+  // what a doctor needs to be moved up to this level automatically; both empty = only staff can give it
+  promoteAfterConsultations Int? // finished consultations, in total
+  promoteMinRating          Decimal? @db.Decimal(3, 2) // average patient rating, at least
+  sortOrder         Int      @default(0)
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  doctors DoctorProfile[]
+}
+
+/// What a patient said about a consultation.
+model DoctorReview {
+  id            Int          @id @default(autoincrement())
+  doctorId      Int
+  patientId     Int?
+  appointmentId Int          @unique
+  rating        Int // 1 to 5
+  comment       String?
+  status        ReviewStatus @default(APPROVED)
+  createdAt     DateTime     @default(now())
+
+  doctor      DoctorProfile @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  patient     User?         @relation(fields: [patientId], references: [id], onDelete: SetNull)
+  appointment Appointment   @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+
+  @@index([doctorId, status])
+}
+
+// ─────────────────────────────────────────────── notifications
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  WHATSAPP
+}
+
+enum NotificationStatus {
+  QUEUED
+  SENT
+  FAILED // tried and refused; retried a few times
+  SKIPPED // not sent on purpose: channel switched off, not connected, or no address to send to
+}
+
+/// One kind of message the system sends by itself (order placed, appointment reminder…). Edited by staff.
+model NotificationTemplate {
+  event            String   @id // e.g. "order.placed"
+  audience         String // CUSTOMER, DOCTOR, PATIENT, STAFF: who receives it
+  description      String? // when it is sent, in plain words
+  isActive         Boolean  @default(true)
+  emailEnabled     Boolean  @default(true)
+  emailSubject     String?
+  emailBody        String? // plain text with {{placeholders}}
+  smsEnabled       Boolean  @default(false)
+  smsTemplateId    String? // MSG91 flow id of the DLT-approved text
+  smsText          String? // the approved text, for reference; its {{placeholders}} are sent as var1, var2…
+  whatsappEnabled  Boolean  @default(false)
+  whatsappTemplate String? // name of the approved WhatsApp template
+  whatsappLanguage String   @default("en")
+  whatsappParams   String[] // placeholders filling the template's {{1}}, {{2}}… in order
+  updatedAt        DateTime @updatedAt
+}
+
+/// Every message the system sent or tried to send.
+model Notification {
+  id          Int                 @id @default(autoincrement())
+  event       String
+  channel     NotificationChannel
+  userId      Int?
+  recipient   String? // email address or mobile number
+  subject     String?
+  body        String?
+  data        Json? // the values that filled the message; kept so an SMS or WhatsApp can be sent again
+  status      NotificationStatus  @default(QUEUED)
+  error       String?
+  attempts    Int                 @default(0)
+  relatedType String? // Order, Appointment, DoctorProfile, DoctorPayout…
+  relatedId   Int?
+  createdAt   DateTime            @default(now())
+  sentAt      DateTime?
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([event, createdAt])
+  @@index([relatedType, relatedId])
+  @@index([userId, createdAt])
+}
+
+/// The last invoice number used in each financial year (April to March), e.g. "2026-27".
+model InvoiceCounter {
+  financialYear String @id
+  last          Int    @default(0)
+}
+
+// ─────────────────────────────────────────────── refunds
+
+enum RefundStatus {
+  PENDING // asked for at the gateway, not confirmed yet
+  SUCCESS
+  FAILED
+}
+
+/// Money sent back to a customer for a payment they made online.
+model Refund {
+  id            Int          @id @default(autoincrement())
+  paymentId     Int
+  orderId       Int?
+  appointmentId Int?
+  amount        Decimal      @db.Decimal(12, 2)
+  status        RefundStatus @default(PENDING)
+  providerRef   String?      @unique // our own reference for this refund at the gateway
+  reason        String?
+  automatic     Boolean      @default(false) // started by the system, not by a staff member
+  requestedById Int?
+  error         String?
+  rawResponse   Json?
+  createdAt     DateTime     @default(now())
+  completedAt   DateTime?
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+  @@index([status])
+  @@index([orderId])
+  @@index([appointmentId])
+}
+
+/// One run of the guided booking: what the patient asked for and which doctors were suggested.
+/// Kept so the suggestions can be judged later by what happened next (opened, booked, completed, rated).
+model MatchSession {
+  id               Int      @id @default(autoincrement())
+  userId           Int?
+  specializationId Int?
+  input            Json // symptoms, severity, preferences
+  result           Json // the doctors shown, in order, with why and their scores
+  createdAt        DateTime @default(now())
+
+  events       MatchEvent[]
+  appointments Appointment[]
+
+  @@index([userId, createdAt])
+}
+
+/// A step in the journey of one suggestion: shown, opened, booked.
+model MatchEvent {
+  id        Int      @id @default(autoincrement())
+  sessionId Int
+  doctorId  Int
+  type      String // IMPRESSION, CLICK, BOOKED
+  position  Int?
+  reason    String?
+  createdAt DateTime @default(now())
+
+  session MatchSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([doctorId, type])
+}
+
+/// A report or photo a patient added while booking. The file itself is kept in a private folder
+/// (backend/private/consultations) and only handed out to the patient, their doctor and staff.
+model ConsultationFile {
+  id            Int      @id @default(autoincrement())
+  uploaderId    Int // the patient who uploaded it
+  appointmentId Int? // empty until the booking is made
+  fileName      String // the name shown to people
+  storedName    String   @unique // the name on disk
+  kind          String // jpg, png, webp or pdf
+  size          Int
+  createdAt     DateTime @default(now())
+
+  appointment Appointment? @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+
+  @@index([appointmentId])
+  @@index([uploaderId, appointmentId])
+}
